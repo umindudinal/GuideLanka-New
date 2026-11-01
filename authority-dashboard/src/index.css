@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme {
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-200: var(--slate-200);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-600: var(--slate-600);
+  --color-slate-700: var(--slate-700);
+  --color-slate-800: var(--slate-800);
+  --color-slate-850: var(--slate-850);
+  --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-950);
+
+  --color-emerald-400: var(--emerald-400);
+  --color-emerald-500: var(--emerald-500);
+  --color-teal-400: var(--teal-400);
+  --color-teal-500: var(--teal-500);
+  --color-rose-400: var(--rose-400);
+  --color-rose-500: var(--rose-500);
+  --color-amber-400: var(--amber-400);
+  --color-amber-500: var(--amber-500);
+}
+
+:root {
+  --slate-50: #0f172a;
+  --slate-100: #1e293b;
+  --slate-200: #334155;
+  --slate-300: #475569;
+  --slate-400: #64748b;
+  --slate-500: #94a3b8;
+  --slate-600: #cbd5e1;
+  --slate-700: #cbd5e1;
+  --slate-800: #e2e8f0;
+  --slate-850: #f1f5f9;
+  --slate-900: #ffffff;
+  --slate-950: #f8fafc;
+
+  --emerald-400: #047857;
+  --emerald-500: #059669;
+  --teal-400: #0f766e;
+  --teal-500: #0d9488;
+  --rose-400: #b91c1c;
+  --rose-500: #dc2626;
+  --amber-400: #b45309;
+  --amber-500: #d97706;
+}
+
+
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  min-width: 320px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img, video, svg {
+  max-width: 100%;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 1.5rem;
+  z-index: 0;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background-color: var(--slate-900) !important;
+  color: var(--slate-50) !important;
+  border: 1px solid var(--slate-800) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  font-family: inherit;
+}
+
+.leaflet-bar {
+  border: 1px solid var(--slate-800) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-bar a {
+  background-color: var(--slate-900) !important;
+  color: var(--slate-50) !important;
+  border-bottom: 1px solid var(--slate-800) !important;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--slate-850) !important;
+  color: var(--emerald-500) !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
