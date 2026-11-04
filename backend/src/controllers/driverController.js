@@ -51,7 +51,7 @@ exports.getDriverProfile = async (req, res) => {
         const pricePerSafari = profile?.price_per_safari || 12500;
         const totalRevenue = confirmedCount * pricePerSafari;
 
-        let averageRating = 4.8;
+        let averageRating = null;
         if (reviews && reviews.length > 0) {
             const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
             averageRating = Number((totalRating / reviews.length).toFixed(1));
@@ -208,7 +208,7 @@ exports.uploadProfilePicture = async (req, res) => {
 
         const { error: dbError } = await supabase
             .from('users')
-            .update({ profile_image: dbImage })
+            .update({ profile_image: `/uploads/avatars/${driverId}.jpg` })
             .eq('id', driverId);
 
         if (dbError) {
@@ -348,7 +348,7 @@ exports.updateDriverByAdmin = async (req, res) => {
                 if (!dbImage.startsWith('data:image/')) {
                     dbImage = `data:image/jpeg;base64,${dbImage}`;
                 }
-                userUpdates.profile_image = dbImage;
+                userUpdates.profile_image = `/uploads/avatars/${driverId}.jpg`;
 
                 try {
                     const base64Data = profile_image.replace(/^data:image\/\w+;base64,/, "");

@@ -166,9 +166,7 @@ function DriverCard({ driver, onDriverDeleted, onDriverUpdated }) {
         phone_number: formattedPhone
       };
       if (imageChanged) {
-        userUpdates.profile_image = editImageBase64 ? (
-          editImageBase64.startsWith('data:') ? editImageBase64 : `data:image/jpeg;base64,${editImageBase64}`
-        ) : null;
+        userUpdates.profile_image = editImageBase64 ? `/uploads/avatars/${driver.id}.jpg` : null;
       }
 
       const { error: userError } = await supabase
@@ -236,7 +234,11 @@ function DriverCard({ driver, onDriverDeleted, onDriverUpdated }) {
   };
 
 
-  const avatarUrl = driver.profile_image || `${API_BASE_URL}/uploads/avatars/${driver.id}.jpg`;
+  const avatarUrl = driver.profile_image
+    ? (driver.profile_image.startsWith('http') || driver.profile_image.startsWith('data:')
+        ? driver.profile_image
+        : `${API_BASE_URL}${driver.profile_image.startsWith('/') ? '' : '/'}${driver.profile_image}`)
+    : `${API_BASE_URL}/uploads/avatars/${driver.id}.jpg`;
 
   const fetchReviews = async () => {
     setLoadingReviews(true);
@@ -259,9 +261,13 @@ function DriverCard({ driver, onDriverDeleted, onDriverUpdated }) {
     }
   }, [showReviews]);
 
-  const avgRating = reviews.length > 0
-    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1)
-    : '4.8';
+  const allReviews = (reviews && reviews.length > 0)
+    ? reviews
+    : (driver.driver_reviews || []);
+  const reviewsCount = allReviews.length;
+  const avgRating = reviewsCount > 0
+    ? (allReviews.reduce((acc, r) => acc + r.rating, 0) / reviewsCount).toFixed(1)
+    : null;
 
   return (
     <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl relative overflow-hidden group hover:border-slate-700 transition flex flex-col justify-between">
@@ -308,8 +314,12 @@ function DriverCard({ driver, onDriverDeleted, onDriverUpdated }) {
             <span>{driver.phone_number || 'No Contact Listed'}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Star size={13} className="text-amber-500 shrink-0 fill-amber-500" />
-            <span>Rating: <span className="font-bold text-slate-200">{avgRating}</span> ({reviews.length || 0} reviews)</span>
+            <Star size={13} className={`shrink-0 ${avgRating ? 'text-amber-500 fill-amber-500' : 'text-slate-600'}`} />
+            {avgRating ? (
+              <span>Rating: <span className="font-bold text-slate-200">{avgRating}</span> ({reviewsCount} {reviewsCount === 1 ? 'review' : 'reviews'})</span>
+            ) : (
+              <span className="text-slate-400">Rating: <span className="text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded text-[10px]">New Guide</span> (No reviews yet)</span>
+            )}
           </div>
         </div>
       </div>

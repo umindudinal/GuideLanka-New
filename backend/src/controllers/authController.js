@@ -79,11 +79,7 @@ const registerUser = async (req, res) => {
         const userData = { full_name, email, password: hashedPassword, role, phone_number: formattedPhone };
 
         if (profile_image) {
-            let dbImage = profile_image;
-            if (!dbImage.startsWith('data:image/')) {
-                dbImage = `data:image/jpeg;base64,${dbImage}`;
-            }
-            userData.profile_image = dbImage;
+            userData.profile_image = null;
         }
 
         const { data: newUser, error: userError } = await supabase
@@ -117,6 +113,11 @@ const registerUser = async (req, res) => {
                     }
                     const filePath = path.join(uploadDir, `${userId}.jpg`);
                     fs.writeFileSync(filePath, buffer);
+
+                    await supabase
+                        .from('users')
+                        .update({ profile_image: `/uploads/avatars/${userId}.jpg` })
+                        .eq('id', userId);
                 } catch (fsErr) {
                     console.error("Error writing registered driver avatar to disk:", fsErr);
                 }

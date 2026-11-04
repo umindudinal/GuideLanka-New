@@ -19,7 +19,11 @@ import {
 
 function DriverAvatar({ driver }) {
   const [error, setError] = useState(false);
-  const avatarUrl = driver.profile_image || `${API_BASE_URL}/uploads/avatars/${driver.id}.jpg`;
+  const avatarUrl = driver.profile_image
+    ? (driver.profile_image.startsWith('http') || driver.profile_image.startsWith('data:')
+        ? driver.profile_image
+        : `${API_BASE_URL}${driver.profile_image.startsWith('/') ? '' : '/'}${driver.profile_image}`)
+    : `${API_BASE_URL}/uploads/avatars/${driver.id}.jpg`;
   const isActive = driver.driver_profiles ? (driver.driver_profiles.is_active !== false) : true;
 
   if (!error) {
@@ -69,28 +73,27 @@ export default function DriversList() {
   const fetchDrivers = async (showLoading = true) => {
     try {
       if (showLoading) setLoading(true);
-      const { data: driversData, error: driversError } = await supabase
-        .from('users')
-        .select(`
-          *,
-          driver_profiles:driver_profiles!id(is_active, experience_years, vehicle_id, price_per_safari, experience),
-          driver_reviews:driver_reviews!driver_id(rating)
-        `)
-        .eq('role', 'DRIVER');
+      const [driversResult, bookingsResult, sightingsResult] = await Promise.all([
+        supabase
+          .from('users')
+          .select(`
+            id, full_name, email, phone_number, role, profile_image, created_at,
+            driver_profiles:driver_profiles!id(is_active, experience_years, vehicle_id, price_per_safari, experience),
+            driver_reviews:driver_reviews!driver_id(rating)
+          `)
+          .eq('role', 'DRIVER'),
+        supabase
+          .from('bookings')
+          .select('driver_id, booking_date, status'),
+        supabase
+          .from('sightings')
+          .select('driver_id')
+      ]);
 
-      if (driversError) throw driversError;
-
-      const { data: bookingsData, error: bookingsError } = await supabase
-        .from('bookings')
-        .select('driver_id, booking_date, status');
-
-      if (bookingsError) throw bookingsError;
-
-      const { data: sightingsData, error: sightingsError } = await supabase
-        .from('sightings')
-        .select('driver_id');
-
-      if (sightingsError) throw sightingsError;
+      if (driversResult.error) throw driversResult.error;
+      const driversData = driversResult.data || [];
+      const bookingsData = bookingsResult.data || [];
+      const sightingsData = sightingsResult.data || [];
 
       const bookingsCountMap = {};
       if (bookingsData) {
@@ -116,9 +119,10 @@ export default function DriversList() {
 
       const enrichedDrivers = driversData.map(d => {
         const reviews = d.driver_reviews || [];
-        const avg = reviews.length > 0
-          ? parseFloat((reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1))
-          : 4.8;
+        const reviewsCount = reviews.length;
+        const avg = reviewsCount > 0
+          ? parseFloat((reviews.reduce((sum, r) => sum + r.rating, 0) / reviewsCount).toFixed(1))
+          : null;
 
         const isBookedToday = bookingsData?.some(b =>
           b.driver_id === d.id &&
@@ -129,6 +133,7 @@ export default function DriversList() {
         return {
           ...d,
           avgRating: avg,
+          reviewsCount,
           tripsCount: bookingsCountMap[d.id] || 0,
           sightingsCount: sightingsCountMap[d.id] || 0,
           experience: d.driver_profiles?.experience_years || 5,
@@ -198,14 +203,18 @@ export default function DriversList() {
       (expFilter === '5+' && driver.experience >= 5);
 
     const matchesRating = ratingFilter === 'All' ||
-      (ratingFilter === '4.8+' && driver.avgRating >= 4.8) ||
-      (ratingFilter === '4.5+' && driver.avgRating >= 4.5);
+      (ratingFilter === '4.8+' && driver.avgRating !== null && driver.avgRating >= 4.8) ||
+      (ratingFilter === '4.5+' && driver.avgRating !== null && driver.avgRating >= 4.5);
 
     return matchesSearch && matchesStatus && matchesExp && matchesRating;
   });
 
   const sortedDrivers = [...filteredDrivers].sort((a, b) => {
-    if (sortBy === 'Rating') return b.avgRating - a.avgRating;
+    if (sortBy === 'Rating') {
+      const aR = a.avgRating !== null ? a.avgRating : -1;
+      const bR = b.avgRating !== null ? b.avgRating : -1;
+      return bR - aR;
+    }
     if (sortBy === 'Trips') return b.tripsCount - a.tripsCount;
     if (sortBy === 'Experience') return b.experience - a.experience;
     if (sortBy === 'Sightings') return b.sightingsCount - a.sightingsCount;
@@ -214,12 +223,15 @@ export default function DriversList() {
 
   let topGuideId = null;
   if (drivers.length > 0) {
-    const scoreMap = drivers.map(d => ({
-      id: d.id,
-      score: (d.avgRating * 2) + (d.tripsCount * 0.5) + (d.sightingsCount * 0.3)
-    }));
-    scoreMap.sort((a, b) => b.score - a.score);
-    topGuideId = scoreMap[0]?.id;
+    const eligibleGuides = drivers.filter(d => d.reviewsCount > 0 && d.avgRating !== null);
+    if (eligibleGuides.length > 0) {
+      const scoreMap = eligibleGuides.map(d => ({
+        id: d.id,
+        score: (d.avgRating * 2) + (d.tripsCount * 0.5) + (d.sightingsCount * 0.3)
+      }));
+      scoreMap.sort((a, b) => b.score - a.score);
+      topGuideId = scoreMap[0]?.id;
+    }
   }
 
   const handleResetFilters = () => {
@@ -464,10 +476,12 @@ export default function DriversList() {
 
                       {/* Rating */}
                       <div className="bg-amber-50/60 border border-amber-200/80 py-2 px-1.5 rounded-xl flex items-center justify-center gap-1.5 text-amber-900 min-w-0">
-                        <Star size={13} className="fill-amber-400 text-amber-500 shrink-0" />
+                        <Star size={13} className={`shrink-0 ${driver.avgRating ? 'fill-amber-400 text-amber-500' : 'text-amber-500/50'}`} />
                         <div className="text-left min-w-0">
                           <span className="text-[9px] text-amber-700/80 font-bold uppercase tracking-wider block leading-none truncate">Rating</span>
-                          <span className="text-[11px] sm:text-xs font-black text-amber-950 truncate block mt-0.5">{driver.avgRating} ★</span>
+                          <span className="text-[11px] sm:text-xs font-black text-amber-950 truncate block mt-0.5">
+                            {driver.avgRating !== null ? `${driver.avgRating} ★` : 'New'}
+                          </span>
                         </div>
                       </div>
                     </div>

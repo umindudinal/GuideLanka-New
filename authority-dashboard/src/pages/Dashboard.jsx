@@ -100,23 +100,31 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
   const fetchAllData = async () => {
     try {
       const timeLimit = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      const { data: sightingsData, error: sErr } = await supabase
-        .from('sightings')
-        .select('*')
-        .gte('created_at', timeLimit)
-        .order('created_at', { ascending: false });
 
-      if (!sErr && sightingsData) {
+      // Parallel data fetching via Promise.all
+      const [
+        { data: sightingsData },
+        { data: usersData },
+        { data: eAlerts },
+        { data: regAlerts },
+        { data: locationUpdates },
+        { data: bookingsData },
+        { data: touristsData }
+      ] = await Promise.all([
+        supabase.from('sightings').select('*').gte('created_at', timeLimit).order('created_at', { ascending: false }),
+        supabase.from('users').select('*, driver_profile:driver_profiles(*), driver_reviews:driver_reviews!driver_id(rating)').eq('role', 'DRIVER'),
+        supabase.from('emergency_alerts').select('*, driver:users(full_name, phone_number, email)').order('timestamp', { ascending: false }),
+        supabase.from('alerts').select('*, driver:users(full_name, phone_number, email)').order('created_at', { ascending: false }),
+        supabase.from('alerts').select('*').eq('alert_type', 'LOCATION_UPDATE').order('created_at', { ascending: false }),
+        supabase.from('bookings').select('*, tourist:users!tourist_id(full_name, email)').order('created_at', { ascending: false }),
+        supabase.from('users').select('id, full_name, email, phone_number, role, created_at').eq('role', 'TOURIST')
+      ]);
+
+      if (sightingsData) {
         setSightings(sightingsData);
       }
 
-      // Fetch drivers first so alerts can be enriched with driver name & phone
-      const { data: usersData, error: uErr } = await supabase
-        .from('users')
-        .select('*, driver_profile:driver_profiles(*)')
-        .eq('role', 'DRIVER');
-
-      if (!uErr && usersData) {
+      if (usersData) {
         setDrivers(usersData);
       }
 
@@ -128,30 +136,19 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
       }
 
       let alertsData = [];
-      const { data: eAlerts, error: eErr } = await supabase
-        .from('emergency_alerts')
-        .select('*, driver:users(full_name, phone_number, email)')
-        .order('timestamp', { ascending: false });
-
-      if (!eErr && eAlerts) {
+      if (eAlerts && eAlerts.length > 0) {
         alertsData = eAlerts;
-      } else {
-        const { data: regAlerts, error: aErr } = await supabase
-          .from('alerts')
-          .select('*, driver:users(full_name, phone_number, email)')
-          .order('created_at', { ascending: false });
-        if (!aErr && regAlerts) {
-          alertsData = regAlerts.map(a => ({
-            id: a.id,
-            driver_id: a.driver_id,
-            latitude: a.location_lat,
-            longitude: a.location_lng,
-            alert_type: a.alert_type,
-            status: a.status,
-            timestamp: a.created_at,
-            driver: a.driver
-          }));
-        }
+      } else if (regAlerts) {
+        alertsData = regAlerts.map(a => ({
+          id: a.id,
+          driver_id: a.driver_id,
+          latitude: a.location_lat,
+          longitude: a.location_lng,
+          alert_type: a.alert_type,
+          status: a.status,
+          timestamp: a.created_at,
+          driver: a.driver
+        }));
       }
 
       // Enrich all alerts with driver name & phone
@@ -185,13 +182,7 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
       prevAlertIdsRef.current = new Set(alertsData.map(a => a.id));
       setSosAlerts(alertsData);
 
-      const { data: locationUpdates, error: lErr } = await supabase
-        .from('alerts')
-        .select('*')
-        .eq('alert_type', 'LOCATION_UPDATE')
-        .order('created_at', { ascending: false });
-
-      if (!lErr && locationUpdates) {
+      if (locationUpdates) {
         const latestLocs = {};
         locationUpdates.forEach(update => {
           if (!latestLocs[update.driver_id]) {
@@ -205,12 +196,7 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
         setDriverLocations(latestLocs);
       }
 
-      const { data: bookingsData, error: bErr } = await supabase
-        .from('bookings')
-        .select('*, tourist:users!tourist_id(full_name, email)')
-        .order('created_at', { ascending: false });
-
-      if (!bErr && bookingsData) {
+      if (bookingsData) {
         const enrichedBookings = bookingsData.map(b => {
           const driver = usersData?.find(d => d.id === b.driver_id);
           return {
@@ -224,12 +210,7 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
         setBookings(enrichedBookings);
       }
 
-      const { data: touristsData, error: tErr } = await supabase
-        .from('users')
-        .select('*')
-        .eq('role', 'TOURIST');
-
-      if (!tErr && touristsData) {
+      if (touristsData) {
         setTourists(touristsData);
       }
 
@@ -243,7 +224,7 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
 
     const pollInterval = setInterval(() => {
       fetchAllData();
-    }, 8000);
+    }, 30000);
 
     const sightingsChannel = supabase.channel('sightings-updates')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sightings' }, (payload) => {
