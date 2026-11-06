@@ -48,8 +48,9 @@ National Parks in Sri Lanka (including **Yala**, **Wilpattu**, **Udawalawe**, an
 
 - **🧠 Sightings-to-Route (S2R) Algorithm**: Calculates dynamic safari paths along real park tracks using species-specific behavioral decay, congestion penalties, and Dijkstra graph pathfinding.
 - **📶 Offline-First Mobile Resilience**: Caches sightings and SOS signals locally via `SharedPreferences`, auto-syncing upon signal recovery, with an onboard directory of ranger stations, direct VHF radio channels, and compass bearings.
-- **🛡️ Ranger Command Center**: Interactive Leaflet GIS dashboard rendering live jeep positions, active sightings, emergency siren audio alerts, 1-click driver phone calling (`tel:`), and Google Maps coordinate dispatch.
-- **🌍 Tourist Discovery & Booking**: Full-featured web portal with wildlife heatmaps, certified driver search, tiered pricing (local vs. international), and live in-app messaging.
+- **🛡️ Ranger Command Center with Collapsible Sidebar**: Interactive Leaflet GIS dashboard with collapsible navigation (`lg:w-20` ↔ `lg:w-64`), real-time offline detection banner, emergency audio sirens, 1-click driver calling (`tel:`), and Google Maps coordinate dispatch.
+- **🎨 Official Brand Identity**: Unified across all interfaces with the official GuideLanka logo forest green palette (`#024C25` / `#02552a`), replacing disparate default color themes.
+- **🌍 Mobile-Optimized Tourist Discovery**: Responsive portal with verified driver directories, phone-number validated safari reservations, standardized wildlife hero banners, and real-time chat.
 - **🚨 Instant Emergency SOS System**: Dedicated driver emergency trigger (`LOST_ROUTE`, `VEHICLE_BREAKDOWN`, `MEDICAL_EMERGENCY`, `ANIMAL_ENCOUNTER`) notifying park authorities via push notifications, SMS, and audio-visual sirens.
 - **🔒 Role-Based Access Control (RBAC)**: Secure multi-tier authentication (`AUTHORITY`, `DRIVER`, `TOURIST`) backed by signed JWT tokens and encrypted database records.
 
@@ -150,16 +151,24 @@ Where:
 ### 1. 🛡️ Park Authority Command Dashboard (`/authority-dashboard`)
 Dedicated command hub for Department of Wildlife Conservation (DWC) rangers and wardens:
 * **Interactive Live Operations GIS Map**: Leaflet map visualizing real-time positions of safari jeeps, active animal sightings, and authentic Yala Block 5 & 6 GeoJSON road vectors with popup route details.
+* **Collapsible & Expandable Sidebar**:
+  * Seamless desktop collapse (`lg:w-20`) to expand map viewports, or expand (`lg:w-64`) with rich labels.
+  * Preferences saved in `localStorage` (`authority_sidebar_collapsed`).
+  * Automated window resize dispatching guarantees Leaflet maps recalculate tile bounds without grey artifacts.
+  * Mobile slide-over drawer (`w-72`) with backdrop blur for phone and tablet field units.
+* **Offline Detection & Auto-Sync**:
+  * Real-time network state monitors listening for `online` / `offline` events.
+  * Warning alert banner displayed during network disconnection.
+  * Automatic silent data refetching as soon as connection is restored, switching badge from `Offline` to `Live Sync Engaged`.
 * **Emergency (SOS) Command Center**:
   * Real-time audible siren via Web Audio API when emergencies are broadcast.
   * Direct click-to-call link (`tel:<driver_phone>`) to contact the jeep operator immediately.
   * 1-click **"View on Maps"** external coordinate pin for quick ranger dispatch.
   * Multi-state incident progression tracking (`PENDING` ➔ `INVESTIGATING` ➔ `RESOLVED`).
-* **Geofence Enforcement**: Automated visual and auditory warnings triggered when vehicles stray outside authorized safari sectors.
 * **Driver Compliance Directory**: Inspection of driver identity records, commercial safari licenses, vehicle registrations, and tourist ratings.
 * **Tourist Demographics & Analytics**: Visual charts tracking visitor nationalities, peak safari booking slots, and passenger volumes.
 * **Revenue & Commission Tracker**: Real-time calculation of park entry fees, daily active safaris, and monthly revenue metrics.
-* **Reports & Analysis**: Comprehensive incident history, animal distribution logs, and exportable patrol summaries.
+* **Reports & Analysis**: Comprehensive incident history, animal distribution logs, and printable certified PDF/browser reports.
 
 ### 2. 📱 Safari Driver Mobile App (`/driver_mobile`)
 Built in Flutter (Dart 3) for rugged field reliability in low-connectivity wilderness:
@@ -177,12 +186,17 @@ Built in Flutter (Dart 3) for rugged field reliability in low-connectivity wilde
 
 ### 3. 🌍 Tourist Web Experience (`/tourist-web-app`)
 Responsive traveler portal built with React 19 and Tailwind CSS v4:
-* **Wildlife Explorer & Heatmap (`/map`)**: Interactive map displaying recently verified wildlife sightings and density hotspots across park zones.
-* **Certified Driver Directory (`/drivers`)**: Filterable directory of verified drivers featuring ratings, verified badges, vehicle details, spoken languages, and pricing.
-* **Direct Safari Booking (`/booking`)**: Reservation flow supporting morning, evening, and full-day tours with dynamic local and foreign pricing models.
+* **Verified Driver Directory (`/drivers`)**: Filterable directory of verified drivers featuring ratings, verified badges, vehicle details, spoken languages, and pricing.
+* **Safari Reservation with Contact Capture (`/booking`)**:
+  * Reservation flow supporting morning, evening, and full-day tours with dynamic local and foreign pricing.
+  * Validated contact phone number collection stored securely in database profiles and displayed on booking summaries.
 * **Real-Time Driver Chat (`/chat/:bookingId`)**: Direct chat channel between tourist and assigned safari driver.
 * **Park Safety Manual & Guidelines (`/rules`)**: Visual ethical guide covering vehicle etiquette, waste management, photography rules, and wildlife distance requirements.
-* **Wildlife Gallery & FAQ (`/gallery`, `/faq`)**: Curated wildlife photography, safari planning advice, and national park visitor policies.
+* **Standardized Wildlife Hero Banners**: Cohesive aesthetic across **About Us**, **Terms of Service**, and **Privacy Policy** pages.
+* **Mobile-First Optimizations**:
+  * Prevented iOS Safari auto-zooming on input focus (16px rule).
+  * Dynamic viewport height (`dvh`) modals preventing mobile browser address bar clipping.
+  * Touch-manipulated interactions and responsive navigation drawer with body scroll lock.
 
 ### 4. ⚙️ Central Cloud API (`/backend`)
 * **Production Deployment**: Hosted on Vercel at [`https://guide-lanka-backend.vercel.app`](https://guide-lanka-backend.vercel.app).
@@ -196,11 +210,11 @@ Responsive traveler portal built with React 19 and Tailwind CSS v4:
 
 ```
 GuideLanka/
-├── 📁 authority-dashboard/           # Ranger Command Center (React 19 + Vite)
+├── 📁 authority-dashboard/           # Ranger Command Center (React 19 + Vite + Tailwind v4)
 │   ├── 📁 src/
 │   │   ├── 📁 assets/                # GeoJSON road networks & branding assets
-│   │   ├── 📁 components/            # LiveMap, SOSPanel, RouteConfig, RevenueTracker,
-│   │   │                             # TouristAnalytics, DriverReviewList, ReportsAnalysis
+│   │   ├── 📁 components/            # Sidebar, LiveMap, SOSPanel, RouteConfig, RevenueTracker,
+│   │   │                             # TouristAnalytics, DriverReviewList, ReportsAnalysis, AdminProfile
 │   │   ├── 📁 pages/                 # Dashboard, Login
 │   │   └── 📁 services/              # Supabase client & API configuration
 │   ├── package.json
@@ -228,17 +242,18 @@ GuideLanka/
 │   │   └── 📁 widgets/               # Theme constants, action cards, status badges
 │   └── pubspec.yaml                  # Flutter package dependencies & asset declarations
 │
-├── 📁 tourist-web-app/               # Tourist Web Portal (React 19 + Vite)
+├── 📁 tourist-web-app/               # Tourist Web Portal (React 19 + Vite + Tailwind v4)
 │   ├── 📁 src/
-│   │   ├── 📁 assets/                # Wildlife showcases, park safety icons, banners
-│   │   ├── 📁 components/            # Auth modal, booking form, driver cards, live map, navbar, footer
-│   │   ├── 📁 pages/                 # Home, DriversList, BookingPage, MapPage, ParkRules,
-│   │   │                             # DriverProfile, ChatPage, Gallery, FaqPage, AboutPage
+│   │   ├── 📁 assets/                # Wildlife showcases, park safety icons, hero banners
+│   │   ├── 📁 components/            # Auth modal, booking form, driver cards, navbar, footer
+│   │   ├── 📁 pages/                 # Home, DriversList, BookingPage, DriverProfile, ChatPage,
+│   │   │                             # ParkRules, Gallery, FaqPage, AboutPage, PrivacyPage, TermsPage
 │   │   └── 📁 services/              # API and Supabase client bindings
 │   ├── package.json
 │   └── vite.config.js
 │
-└── README.md                         # Comprehensive documentation
+├── .gitignore                        # Universal multi-stack exclusion configuration
+└── README.md                         # Comprehensive system documentation
 ```
 
 ---
@@ -249,8 +264,8 @@ GuideLanka/
 | :--- | :--- | :--- |
 | **Backend Runtime** | Node.js (v20+), Express.js (v5.x) | RESTful MVC architecture deployed on Vercel |
 | **Database & Auth** | Supabase (PostgreSQL), JWT, Bcrypt | Relational storage, row security, RBAC tokens |
-| **Authority Dashboard** | React 19, Vite, Tailwind CSS v4 | Ranger dispatch command center with Web Audio API alerts |
-| **Tourist Web Portal** | React 19, Vite, Tailwind CSS v4 | Public safari discovery, booking, and wildlife map |
+| **Authority Dashboard** | React 19, Vite, Tailwind CSS v4 | Ranger dispatch command center with Web Audio API alerts & collapsible UI |
+| **Tourist Web Portal** | React 19, Vite, Tailwind CSS v4 | Public safari discovery, booking, and wildlife information |
 | **Mobile Application** | Flutter (Dart 3.x), `flutter_map`, `geolocator` | Rugged safari driver GPS navigation & offline syncing |
 | **GIS & Mapping** | Leaflet, React-Leaflet, OpenStreetMap, GeoJSON | Authentic park tracks (Yala Block 5 & 6) and spatial calculation |
 | **Push & Communications** | OneSignal, NotifyLK SMS, Nodemailer | Real-time emergency push, SMS OTP, and booking alerts |
