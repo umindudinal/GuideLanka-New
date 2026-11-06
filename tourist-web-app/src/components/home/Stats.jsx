@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Users, Map, Compass, Shield } from 'lucide-react';
+import { supabase } from '../../services/supabase';
 
-function AnimatedCounter({ target, suffix = '', duration = 1500, isDecimal = false }) {
+function AnimatedCounter({ target, suffix = '', duration = 1200, isDecimal = false }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    if (target === 0) {
+      setCount(0);
+      return;
+    }
     let startTimestamp = null;
+    let animationFrameId = null;
+
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
@@ -18,43 +25,121 @@ function AnimatedCounter({ target, suffix = '', duration = 1500, isDecimal = fal
       }
 
       if (progress < 1) {
-        window.requestAnimationFrame(step);
+        animationFrameId = window.requestAnimationFrame(step);
       }
     };
-    window.requestAnimationFrame(step);
+    animationFrameId = window.requestAnimationFrame(step);
+
+    return () => {
+      if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
+    };
   }, [target, duration, isDecimal]);
 
   return (
     <span>
       {isDecimal ? count.toFixed(1) : count.toLocaleString()}
-      {suffix}
+      {count > 0 ? suffix : ''}
     </span>
   );
 }
 
 export default function Stats() {
+  const [counts, setCounts] = useState({
+    safarisBooked: 3,
+    sightingReports: 5,
+    verifiedDrivers: 7,
+    safetyRecord: 100.0
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchLiveStats = async () => {
+      try {
+        const [
+          { count: bookingsCount },
+          { count: sightingsCount },
+          { count: driversCount },
+          { count: alertsCount }
+        ] = await Promise.all([
+          supabase.from('bookings').select('*', { count: 'exact', head: true }),
+          supabase.from('sightings').select('*', { count: 'exact', head: true }),
+          supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'DRIVER'),
+          supabase.from('emergency_alerts').select('*', { count: 'exact', head: true })
+        ]);
+
+        if (isMounted) {
+          const totalSafaris = bookingsCount !== null && bookingsCount !== undefined ? bookingsCount : 0;
+          const totalSightings = sightingsCount !== null && sightingsCount !== undefined ? sightingsCount : 0;
+          const totalDrivers = driversCount !== null && driversCount !== undefined ? driversCount : 0;
+          const totalAlerts = alertsCount !== null && alertsCount !== undefined ? alertsCount : 0;
+
+          // Calculate safety record percentage (100% when no emergency incidents reported)
+          let safety = 100.0;
+          if (totalSafaris > 0 && totalAlerts > 0) {
+            safety = Math.max(90.0, parseFloat(((1 - totalAlerts / totalSafaris) * 100).toFixed(1)));
+          }
+
+          setCounts({
+            safarisBooked: totalSafaris,
+            sightingReports: totalSightings,
+            verifiedDrivers: totalDrivers,
+            safetyRecord: safety
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching live database statistics:", err);
+      }
+    };
+
+    fetchLiveStats();
+
+    // Realtime subscriptions to keep the banner reactive
+    const bookingsChannel = supabase
+      .channel('home-stats-bookings')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, fetchLiveStats)
+      .subscribe();
+
+    const sightingsChannel = supabase
+      .channel('home-stats-sightings')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'sightings' }, fetchLiveStats)
+      .subscribe();
+
+    const usersChannel = supabase
+      .channel('home-stats-users')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, fetchLiveStats)
+      .subscribe();
+
+    return () => {
+      isMounted = false;
+      supabase.removeChannel(bookingsChannel);
+      supabase.removeChannel(sightingsChannel);
+      supabase.removeChannel(usersChannel);
+    };
+  }, []);
+
   const stats = [
     {
-      icon: <Users className="text-green-600" size={24} />,
-      target: 1240,
-      suffix: "+",
+      icon: <Users className="text-[#024C25]" size={24} />,
+      target: counts.safarisBooked,
+      suffix: counts.safarisBooked >= 10 ? "+" : "",
       label: "Safaris Booked"
     },
     {
-      icon: <Map className="text-green-600" size={24} />,
-      target: 4820,
-      suffix: "+",
+      icon: <Map className="text-[#024C25]" size={24} />,
+      target: counts.sightingReports,
+      suffix: counts.sightingReports >= 10 ? "+" : "",
       label: "Sighting Reports"
     },
     {
-      icon: <Compass className="text-green-600" size={24} />,
-      target: 120,
-      suffix: "+",
+      icon: <Compass className="text-[#024C25]" size={24} />,
+      target: counts.verifiedDrivers,
+      suffix: counts.verifiedDrivers >= 10 ? "+" : "",
       label: "Verified Drivers"
     },
     {
-      icon: <Shield className="text-green-600" size={24} />,
-      target: 99.9,
+      icon: <Shield className="text-[#024C25]" size={24} />,
+      target: counts.safetyRecord,
       suffix: "%",
       isDecimal: true,
       label: "Safety Record"
@@ -73,10 +158,10 @@ export default function Stats() {
               idx === 3 ? 'md:border-r-0' : ''
             }`}
           >
-            <div className="p-2.5 sm:p-3 bg-green-500/10 rounded-2xl">
+            <div className="p-2.5 sm:p-3 bg-emerald-50 rounded-2xl text-[#024C25] shadow-3xs">
               {stat.icon}
             </div>
-            <span className="text-xl sm:text-2xl md:text-3xl font-black text-gray-800 tracking-tight">
+            <span className="text-xl sm:text-2xl md:text-3xl font-black text-gray-900 tracking-tight">
               <AnimatedCounter
                 target={stat.target}
                 suffix={stat.suffix}

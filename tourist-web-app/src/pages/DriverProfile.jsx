@@ -310,7 +310,7 @@ export default function DriverProfile() {
   const vehicleNumber = rawVeh.includes('•') ? rawVeh.split('•')[0].trim() : (rawVeh || 'SP-NC-4821');
   const experienceYears = profile?.experience_years || 5;
   const pricePerSafari = profile?.price_per_safari || 18000;
-  const licenseNo = profile?.license_no || 'DWCL-9842';
+  const licenseNo = profile?.license_no || 'Not Yet';
 
   // 5-Star distribution for rating card breakdown
   const ratingCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -325,7 +325,7 @@ export default function DriverProfile() {
         className="relative w-full h-72 sm:h-80 md:h-96 overflow-hidden bg-cover bg-center mb-6 shadow-md"
         style={{ backgroundImage: `url(${heroBg})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/75 to-black/40 flex flex-col justify-end p-4 sm:p-8 md:p-12 z-10">
+        <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/75 to-black/40 flex flex-col justify-end p-4 sm:p-8 md:p-12 z-10">
           <div className="container mx-auto max-w-7xl">
             <div className="flex flex-col sm:flex-row sm:items-end gap-5">
 
@@ -339,18 +339,10 @@ export default function DriverProfile() {
                     className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-3xl object-cover border-4 border-white shadow-2xl bg-gray-900 ring-2 ring-emerald-500/30"
                   />
                 ) : (
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-3xl shadow-2xl bg-gradient-to-tr from-[#024C25] to-emerald-500 text-white flex items-center justify-center text-3xl sm:text-4xl md:text-5xl font-black border-4 border-white ring-2 ring-emerald-500/30">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-3xl shadow-2xl bg-[#024C25] text-white flex items-center justify-center text-3xl sm:text-4xl md:text-5xl font-black border-4 border-white ring-2 ring-emerald-500/30">
                     {driver.full_name ? driver.full_name.charAt(0) : "G"}
                   </div>
                 )}
-                <span 
-                  className={`absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full border-3 border-white flex items-center justify-center shadow-md ${
-                    isActive ? "bg-emerald-500 ring-2 ring-emerald-200/50" : "bg-gray-400"
-                  }`}
-                  title={isActive ? "Active and Available for Safaris" : "Currently Offline"}
-                >
-                  <span className={`w-2 h-2 rounded-full ${isActive ? "bg-white animate-pulse" : "bg-white/60"}`} />
-                </span>
               </div>
 
               {/* Guide Identity and Credentials */}
@@ -386,7 +378,7 @@ export default function DriverProfile() {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gray-50/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-gray-50/70 to-transparent" />
       </div>
 
       {/* Main Container */}
@@ -459,12 +451,8 @@ export default function DriverProfile() {
             {/* About Naturalist Card */}
             <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-xs border border-gray-200/80 space-y-4">
               <div className="flex items-center gap-2.5 pb-3 border-b border-gray-100">
-                <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#024C25] flex items-center justify-center font-black">
-                  <Award size={18} />
-                </div>
                 <div>
                   <h2 className="text-base sm:text-lg font-black text-gray-900">About Naturalist {driver.full_name.split(' ')[0]}</h2>
-                  <p className="text-[11px] text-gray-500 font-medium">Certified Department of Wildlife Conservation (DWC) Tracker</p>
                 </div>
               </div>
 
@@ -477,12 +465,8 @@ export default function DriverProfile() {
             {/* Vehicle & Safety Equipment Card */}
             <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-xs border border-gray-200/80 space-y-4">
               <div className="flex items-center gap-2.5 pb-3 border-b border-gray-100">
-                <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#024C25] flex items-center justify-center font-black">
-                  <Car size={18} />
-                </div>
                 <div>
                   <h2 className="text-base sm:text-lg font-black text-gray-900">4x4 Safari Jeep & Safety Equipment</h2>
-                  <p className="text-[11px] text-gray-500 font-medium">Custom engineered for rough park terrain & guest viewing</p>
                 </div>
               </div>
 
@@ -517,14 +501,10 @@ export default function DriverProfile() {
             <div id="write-review" className="bg-white rounded-3xl p-6 sm:p-7 shadow-xs border border-gray-200/80 space-y-5 scroll-mt-24">
               <div className="flex items-center justify-between pb-3 border-b border-gray-100">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#024C25] flex items-center justify-center font-black">
-                    <Sparkles size={18} />
-                  </div>
                   <div>
                     <h2 className="text-base sm:text-lg font-black text-gray-900">
                       Share Safari Review for {driver.full_name}
                     </h2>
-                    <p className="text-[11px] text-gray-500 font-medium">Leave feedback to help future wildlife travelers</p>
                   </div>
                 </div>
 
@@ -633,7 +613,6 @@ export default function DriverProfile() {
               ) : (
                 <div className="bg-emerald-50/60 border border-emerald-200 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5 text-xs text-emerald-950 font-medium">
-                    <HeartHandshake size={18} className="text-[#024C25] shrink-0" />
                     <span>Have you traveled with {driver.full_name}? Log in with Google to share your wildlife feedback.</span>
                   </div>
                   <button
@@ -665,7 +644,7 @@ export default function DriverProfile() {
               </div>
 
               {/* Guarantees List */}
-              <div className="space-y-2 pt-2 border-t border-gray-100">
+              {/* <div className="space-y-2 pt-2 border-t border-gray-100">
                 <div className="flex items-center gap-2 text-xs text-gray-700 font-medium">
                   <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
                   <span>100% Private 4x4 Land Cruiser or Hilux</span>
@@ -682,7 +661,7 @@ export default function DriverProfile() {
                   <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
                   <span>Instant Booking Request Confirmation</span>
                 </div>
-              </div>
+              </div> */}
 
               {/* Book Safari Button */}
               <button
@@ -713,14 +692,10 @@ export default function DriverProfile() {
             <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-200/90 space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-gray-100">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#024C25] flex items-center justify-center font-black shrink-0">
-                    <MessageSquare size={17} />
-                  </div>
                   <div>
                     <h3 className="text-sm sm:text-base font-black text-gray-900">
                       Tourist Reviews ({reviewsCount})
                     </h3>
-                    <p className="text-[11px] text-gray-400 font-medium">Verified traveler experiences</p>
                   </div>
                 </div>
 
@@ -756,7 +731,7 @@ export default function DriverProfile() {
                   </button>
                 </div>
               ) : (
-                <div className="space-y-3 max-h-[440px] overflow-y-auto pr-1">
+                <div className="space-y-3 max-h-110 overflow-y-auto pr-1">
                   {reviews.map((rev) => (
                     <div 
                       key={rev.id} 
@@ -794,7 +769,7 @@ export default function DriverProfile() {
                         </div>
                       </div>
 
-                      <p className="text-gray-700 text-xs font-medium leading-relaxed pl-2.5 border-l-2 border-emerald-500 bg-white p-2 rounded-r-xl border-y border-r border-gray-100">
+                      <p className="text-gray-700 text-xs font-medium leading-relaxed pl-2.5 border-l-2 border-emerald-500 bg-white p-2 rounded-r-xl border-y border-r">
                         "{rev.comment}"
                       </p>
                     </div>
@@ -807,7 +782,7 @@ export default function DriverProfile() {
       </div>
 
       {/* Mobile Sticky Booking Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 px-4 z-40 flex items-center justify-between gap-3 shadow-lg">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 px-4 pb-[max(12px,env(safe-area-inset-bottom))] z-40 flex items-center justify-between gap-3 shadow-lg">
         <div>
           <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Safari Rate</span>
           <span className="text-base font-black text-gray-900">

@@ -1,4 +1,4 @@
-import { Camera, Calendar, Map } from 'lucide-react';
+import { Camera, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import heroBg from '../../assets/background.jpg';
 
@@ -15,12 +15,6 @@ export default function Hero() {
       <div className="container relative mx-auto px-4 z-10">
         <div className="items-center flex flex-wrap justify-center">
           <div className="w-full lg:w-9/12 px-2 sm:px-4 text-center">
-
-            <div className="inline-flex items-center px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-green-300 mb-4 sm:mb-6 mt-4 sm:mt-8 md:mt-12 shadow-inner">
-              <Camera size={14} className="mr-2 animate-pulse" />
-              <span className="text-[11px] sm:text-xs font-bold tracking-wider uppercase">Welcome to the Wild</span>
-            </div>
-
             <h1 className="text-white font-black text-3xl sm:text-5xl md:text-7xl drop-shadow-md mb-4 sm:mb-6 leading-tight tracking-tight">
               Discover the Untamed <br />
               <span className="bg-linear-to-r from-green-400 via-emerald-300 to-green-300 bg-clip-text text-transparent">Beauty of Sri Lanka</span>
@@ -38,13 +32,6 @@ export default function Hero() {
                 <Calendar size={18} />
                 Plan Your Safari
               </Link>
-              {/* <Link
-                to="/map"
-                className="w-full sm:w-auto bg-white/10 hover:bg-white/15 text-white border border-white/20 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl font-bold text-sm sm:text-base transition-all backdrop-blur-sm flex items-center justify-center gap-2 transform active:scale-95"
-              >
-                <Map size={18} className="text-green-400" />
-                Live Safari Map
-              </Link> */}
             </div>
 
           </div>

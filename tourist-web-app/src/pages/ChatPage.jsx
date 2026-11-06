@@ -264,7 +264,7 @@ export default function ChatPage() {
 
   return (
     <div className="pt-20 sm:pt-24 pb-4 sm:pb-8 min-h-screen bg-gray-50/50 flex flex-col items-center justify-center p-2 sm:p-4">
-      <div className="w-full max-w-4xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col h-[calc(100dvh-100px)] sm:h-[80vh] min-h-115 border border-gray-100 relative">
+      <div className="w-full max-w-4xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col h-[calc(100dvh-88px)] sm:h-[80vh] min-h-[380px] border border-gray-100 relative">
 
         <div className="bg-linear-to-r from-green-800 to-green-700 text-white px-3.5 sm:px-6 py-3 sm:py-4 flex justify-between items-center shadow-md z-10 shrink-0">
           <div className="flex items-center space-x-2.5 sm:space-x-3.5 min-w-0">
@@ -354,7 +354,7 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="p-2.5 sm:p-4 bg-white border-t border-gray-100 shrink-0">
+        <div className="p-2.5 sm:p-4 pb-[max(10px,env(safe-area-inset-bottom))] bg-white border-t border-gray-100 shrink-0">
           {user ? (
             <form onSubmit={handleSendMessage} className="flex space-x-2 sm:space-x-3">
               <input

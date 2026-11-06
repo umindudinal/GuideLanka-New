@@ -54,10 +54,6 @@ export default function ContactPage() {
         style={{ backgroundImage: `url(${heroBg})` }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-900/50 to-black/30 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-500/30 mb-3 sm:mb-4 backdrop-blur-md animate-pulse">
-            <Mail size={14} className="text-green-400" />
-            <span>GET IN TOUCH WITH US</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-2 sm:mb-4 tracking-tight leading-tight">
             Contact GuideLanka
           </h1>
@@ -72,108 +68,9 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10">
 
-          {/* Left Column: Direct Contact Information */}
-          <div className="lg:col-span-5 space-y-6">
-
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm space-y-6">
-              <div>
-                <span className="text-[11px] font-black uppercase text-green-700 tracking-wider bg-green-50 px-2.5 py-1 rounded-md border border-green-100">
-                  Direct Assistance
-                </span>
-                <h2 className="text-2xl font-black text-gray-900 mt-2">We Are Here to Help</h2>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1 leading-relaxed">
-                  Reach out through any of our official channels or send us an inquiry directly.
-                </p>
-              </div>
-
-              <div className="space-y-5 pt-2">
-                <div className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-2xl bg-green-50 text-green-700 border border-green-100 flex items-center justify-center shrink-0 shadow-3xs">
-                    <MapPin size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-gray-800">Field Desk & Information</h3>
-                    <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-                      Department of Wildlife Conservation Desk,<br />
-                      Palatupana & Galge Entrances, Yala National Park, Sri Lanka
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-2xl bg-green-50 text-green-700 border border-green-100 flex items-center justify-center shrink-0 shadow-3xs">
-                    <Phone size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-gray-800">Phone Support</h3>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      General: <a href="tel:+94771234567" className="font-bold text-gray-700 hover:text-green-700">+94 77 123 4567</a><br />
-                      Hotline: <span className="font-bold text-gray-700">+94 47 223 9000</span>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-2xl bg-green-50 text-green-700 border border-green-100 flex items-center justify-center shrink-0 shadow-3xs">
-                    <Mail size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-gray-800">Official Email</h3>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      <a href="mailto:support@guidelanka.com" className="font-bold text-gray-700 hover:text-green-700">support@guidelanka.com</a><br />
-                      <a href="mailto:info@guidelanka.com" className="text-gray-500 hover:text-green-700">info@guidelanka.com</a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-2xl bg-green-50 text-green-700 border border-green-100 flex items-center justify-center shrink-0 shadow-3xs">
-                    <Clock size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-gray-800">Operational Hours</h3>
-                    <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-                      Daily: <strong>05:30 AM – 06:30 PM</strong> (Safari Operating Hours)<br />
-                      Digital Support: <strong>24/7 Available</strong>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* WhatsApp Quick Action */}
-              <div className="pt-2 border-t border-gray-100">
-                <a
-                  href="https://wa.me/94771234567"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white font-extrabold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-md transition transform active:scale-95 cursor-pointer"
-                >
-                  <MessageCircle size={18} />
-                  <span>Chat on WhatsApp (+94 77 123 4567)</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Emergency Hotline Alert Card */}
-            <div className="bg-red-50 border border-red-200/80 rounded-3xl p-5 sm:p-6 text-red-950 flex items-start gap-3.5 shadow-sm">
-              <ShieldAlert className="text-red-600 shrink-0 mt-0.5" size={22} />
-              <div className="space-y-1">
-                <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-red-900">
-                  Park Emergency Numbers
-                </h4>
-                <p className="text-xs text-red-800/90 leading-relaxed font-medium">
-                  In case of an urgent wildlife emergency or medical evacuation inside Yala National Park, dial <strong>1990</strong> (Suwa Seriya Ambulance) or contact Park Warden Emergency: <strong>+94 47 223 9005</strong>.
-                </p>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right Column: Contact Inquiry Form */}
+          {/* Left Column: Contact Inquiry Form */}
           <div className="lg:col-span-7">
-
             <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-gray-200/80 shadow-md">
-
               {isSubmitted ? (
                 <div className="text-center py-12 sm:py-16 space-y-4">
                   <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto shadow-sm">
@@ -303,6 +200,85 @@ export default function ContactPage() {
 
             </div>
 
+          </div>
+
+          {/* Right Column: Direct Contact Information */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm space-y-6">
+              <div>
+                <h2 className="text-2xl font-black text-gray-900 mt-2">We Are Here to Help</h2>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1 leading-relaxed">
+                  Reach out through any of our official channels or send us an inquiry directly.
+                </p>
+              </div>
+
+              <div className="space-y-5 pt-2">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-2xl bg-green-50 text-green-700 border border-green-100 flex items-center justify-center shrink-0 shadow-3xs">
+                    <MapPin size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-gray-800">Field Desk & Information</h3>
+                    <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                      Department of Wildlife Conservation Desk,<br />
+                      Palatupana & Galge Entrances, Yala National Park, Sri Lanka
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-2xl bg-green-50 text-green-700 border border-green-100 flex items-center justify-center shrink-0 shadow-3xs">
+                    <Phone size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-gray-800">Phone Support</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      General: <a href="tel:+94771234567" className="font-bold text-gray-700 hover:text-green-700">+94 77 123 4567</a><br />
+                      Hotline: <span className="font-bold text-gray-700">+94 47 223 9000</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-2xl bg-green-50 text-green-700 border border-green-100 flex items-center justify-center shrink-0 shadow-3xs">
+                    <Mail size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-gray-800">Official Email</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      <a href="mailto:support@guidelanka.com" className="font-bold text-gray-700 hover:text-green-700">support@guidelanka.com</a><br />
+                      <a href="mailto:info@guidelanka.com" className="text-gray-500 hover:text-green-700">info@guidelanka.com</a>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-2xl bg-green-50 text-green-700 border border-green-100 flex items-center justify-center shrink-0 shadow-3xs">
+                    <Clock size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-gray-800">Operational Hours</h3>
+                    <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                      Daily: <strong>05:30 AM – 06:30 PM</strong> (Safari Operating Hours)<br />
+                      Digital Support: <strong>24/7 Available</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* WhatsApp Quick Action */}
+              <div className="pt-2 border-t border-gray-100">
+                <a
+                  href="https://wa.me/94771234567"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white font-extrabold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-md transition transform active:scale-95 cursor-pointer"
+                >
+                  <MessageCircle size={18} />
+                  <span>Chat on WhatsApp (+94 77 123 4567)</span>
+                </a>
+              </div>
+            </div>
           </div>
 
         </div>

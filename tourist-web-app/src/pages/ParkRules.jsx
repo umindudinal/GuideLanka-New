@@ -112,7 +112,7 @@ export default function ParkRules() {
 
   const wildlifeGuides = {
     elephants: {
-      title: "🐘 Wild Elephant Conduct",
+      title: "Wild Elephant Conduct",
       tips: [
         "Always give wild elephants the absolute right of way on paths.",
         "Keep engines on idle or turn them off completely if an elephant approaches close.",
@@ -121,7 +121,7 @@ export default function ParkRules() {
       ]
     },
     leopards: {
-      title: "🐆 Leopard Sightings",
+      title: "Leopard Sightings",
       tips: [
         "Keep vehicles at a respectful distance to avoid crowding the animal.",
         "Maintain absolute silence; leopards are extremely sound-sensitive.",
@@ -130,7 +130,7 @@ export default function ParkRules() {
       ]
     },
     birds: {
-      title: "🦚 Birds & Nesting",
+      title: "Birds & Nesting",
       tips: [
         "Do not approach nesting sites or disturb breeding bird pairs.",
         "Avoid using birdcall playback apps as it confuses and stresses nesting birds.",
@@ -215,10 +215,6 @@ export default function ParkRules() {
         style={{ backgroundImage: `url(${heroBg})` }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-900/50 to-black/30 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-500/30 mb-3 sm:mb-4 backdrop-blur-md animate-pulse">
-            <Compass size={14} className="text-green-400" />
-            <span>OFFICIAL CONDUCT CODE</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-2 sm:mb-4 tracking-tight leading-tight">Park Guidelines</h1>
           <p className="text-gray-200 text-xs sm:text-base md:text-lg max-w-xl font-medium leading-relaxed px-2">
             Help us protect the wilderness. Observe these mandatory safety policies for an ethical, respectful, and safe safari experience.
@@ -237,7 +233,6 @@ export default function ParkRules() {
               </div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-black text-gray-800">What You Should Do</h2>
-                <p className="text-gray-400 text-xs mt-0.5">Best practices for an eco-responsible visit</p>
               </div>
             </div>
             <ul className="space-y-3 sm:space-y-4 flex-1">
@@ -259,7 +254,6 @@ export default function ParkRules() {
               </div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-black text-gray-800">What You Must Avoid</h2>
-                <p className="text-gray-400 text-xs mt-0.5">Strictly prohibited activities inside the park</p>
               </div>
             </div>
             <ul className="space-y-3 sm:space-y-4 flex-1">
@@ -272,54 +266,6 @@ export default function ParkRules() {
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-sm hover:shadow-md transition duration-300 mb-10 sm:mb-16">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 mb-6 sm:mb-8 border-b border-gray-55 pb-6">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-gray-800 flex items-center gap-2">
-                <HeartHandshake className="text-green-700" size={24} />
-                Responsible Wildlife Encounter Guide
-              </h2>
-              <p className="text-gray-500 text-xs sm:text-sm mt-1">Select an animal to learn how to behave responsibly when spotting them.</p>
-            </div>
-            <div className="flex bg-gray-50 p-1.5 rounded-2xl gap-1 overflow-x-auto no-scrollbar shrink-0 self-start md:self-auto border border-gray-105 w-full md:w-auto">
-              {Object.keys(wildlifeGuides).map(tabKey => (
-                <button
-                  key={tabKey}
-                  onClick={() => setSpottingTab(tabKey)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition duration-200 capitalize cursor-pointer shrink-0 ${
-                    spottingTab === tabKey
-                      ? 'bg-[#024C25] text-white shadow-sm'
-                      : 'text-gray-500 hover:text-gray-850 hover:bg-gray-100'
-                  }`}
-                >
-                  {tabKey}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-1 bg-linear-to-tr from-green-800 to-emerald-600 rounded-2xl p-6 text-white flex flex-col justify-between min-h-40 md:h-48">
-              <span className="text-green-300 text-xs font-black uppercase tracking-wider">Spotting Guidelines</span>
-              <div>
-                <h3 className="text-xl sm:text-2xl font-black mb-1.5">{wildlifeGuides[spottingTab].title}</h3>
-                <p className="text-white/80 text-xs leading-relaxed">Observe wildlife carefully without disrupting their cycles.</p>
-              </div>
-            </div>
-
-            <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {wildlifeGuides[spottingTab].tips.map((tip, idx) => (
-                <div key={idx} className="bg-gray-50/50 rounded-2xl p-4 sm:p-5 border border-gray-200 flex items-start gap-3 hover:border-green-700/20 hover:bg-green-50/10 transition duration-200">
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-50 border border-green-100 text-green-750 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                    {idx + 1}
-                  </div>
-                  <p className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed">{tip}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 

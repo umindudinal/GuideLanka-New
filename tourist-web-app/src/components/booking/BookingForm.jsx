@@ -63,7 +63,7 @@ function GuideAvatarItem({ driver, size = "w-12 h-12", textSize = "text-base", r
   }
 
   return (
-    <div className={`${size} ${rounded} bg-gradient-to-tr from-[#024C25] to-emerald-600 text-white font-black ${textSize} flex items-center justify-center shrink-0 border border-white/60 shadow-2xs`}>
+    <div className={`${size} ${rounded} bg-[#024C25] text-white font-black ${textSize} flex items-center justify-center shrink-0 border border-white/60 shadow-2xs`}>
       {driver?.full_name ? driver.full_name.charAt(0) : "G"}
     </div>
   );
@@ -112,11 +112,11 @@ function GuideSelectModal({ isOpen, onClose, drivers, loading, selectedDriverId,
 
   return createPortal(
     <div 
-      className="fixed inset-0 z-[100] bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6"
+      className="fixed inset-0 z-100 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6"
       onClick={onClose}
     >
       <div 
-        className="relative bg-white rounded-3xl max-w-xl w-full max-h-[85vh] sm:max-h-[80vh] flex flex-col shadow-2xl border border-gray-100 overflow-hidden my-auto"
+        className="relative bg-white rounded-3xl max-w-xl w-full max-h-[90dvh] sm:max-h-[85vh] flex flex-col shadow-2xl border border-gray-100 overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1)' }}
       >
@@ -331,6 +331,7 @@ export default function BookingForm() {
   const [specialPreferences, setSpecialPreferences] = useState([]);
   const [specialNotes, setSpecialNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contactPhone, setContactPhone] = useState('');
 
   const [driverBookingsOnDate, setDriverBookingsOnDate] = useState([]);
   const [loadingSchedule, setLoadingSchedule] = useState(false);
@@ -454,11 +455,14 @@ export default function BookingForm() {
       try {
         const { data: existingUser } = await supabase
           .from('users')
-          .select('id')
+          .select('id, phone_number')
           .eq('email', user.email)
           .maybeSingle();
 
         if (existingUser && isMounted) {
+          if (existingUser.phone_number) {
+            setContactPhone(prev => prev || existingUser.phone_number);
+          }
           const { data: activeList, error } = await supabase
             .from('bookings')
             .select('id, status, driver_id, booking_date, time_slot')
@@ -588,18 +592,29 @@ export default function BookingForm() {
       return;
     }
 
+    if (!contactPhone || contactPhone.trim().length < 7) {
+      showAlert("Please enter a valid contact phone number so your safari guide can coordinate pickup and gate clearances.", "warning", "Phone Number Required");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       let touristId;
       const { data: existingUser } = await supabase
         .from('users')
-        .select('id')
+        .select('id, phone_number')
         .eq('email', user.email)
         .maybeSingle();
 
       if (existingUser) {
         touristId = existingUser.id;
+        if (contactPhone.trim() && contactPhone.trim() !== existingUser.phone_number) {
+          await supabase
+            .from('users')
+            .update({ phone_number: contactPhone.trim() })
+            .eq('id', touristId);
+        }
       } else {
         const { data: newUser, error: insertUserError } = await supabase
           .from('users')
@@ -608,7 +623,8 @@ export default function BookingForm() {
               full_name: user.displayName || 'Google User',
               email: user.email,
               role: 'TOURIST',
-              password: 'GOOGLE_AUTH_LOGIN'
+              password: 'GOOGLE_AUTH_LOGIN',
+              phone_number: contactPhone.trim()
             }
           ])
           .select('id')
@@ -687,7 +703,8 @@ export default function BookingForm() {
         driverName: selectedDriverName,
         driverId: selectedDriverId,
         touristId: touristId,
-        totalCostLkr: totalCostLkr
+        totalCostLkr: totalCostLkr,
+        contactPhone: contactPhone.trim()
       });
       setShowSuccessModal(true);
 
@@ -768,9 +785,6 @@ export default function BookingForm() {
           <div className="bg-white rounded-3xl border border-gray-200/80 p-6 sm:p-7 shadow-xs">
             <div className="flex items-center justify-between pb-4 mb-5 border-b border-gray-100">
               <div className="flex items-center gap-2.5">
-                <span className="w-7 h-7 rounded-lg bg-emerald-50 text-[#024C25] font-black text-xs flex items-center justify-center border border-emerald-200/60">
-                  1
-                </span>
                 <h2 className="text-base sm:text-lg font-black text-gray-900">
                   Safari Naturalist & 4x4 Jeep
                 </h2>
@@ -849,9 +863,6 @@ export default function BookingForm() {
           {/* STEP 2: Safari Date & Interactive Time Slot Cards */}
           <div className="bg-white rounded-3xl border border-gray-200/80 p-6 sm:p-7 shadow-xs space-y-5">
             <div className="flex items-center gap-2.5 pb-4 border-b border-gray-100">
-              <span className="w-7 h-7 rounded-lg bg-emerald-50 text-[#024C25] font-black text-xs flex items-center justify-center border border-emerald-200/60">
-                2
-              </span>
               <h2 className="text-base sm:text-lg font-black text-gray-900">
                 Safari Date & Expedition Slot
               </h2>
@@ -1045,9 +1056,6 @@ export default function BookingForm() {
           {/* STEP 3: Travelers & Nationality */}
           <div className="bg-white rounded-3xl border border-gray-200/80 p-6 sm:p-7 shadow-xs space-y-5">
             <div className="flex items-center gap-2.5 pb-4 border-b border-gray-100">
-              <span className="w-7 h-7 rounded-lg bg-emerald-50 text-[#024C25] font-black text-xs flex items-center justify-center border border-emerald-200/60">
-                3
-              </span>
               <h2 className="text-base sm:text-lg font-black text-gray-900">
                 Travelers & Nationality
               </h2>
@@ -1126,6 +1134,35 @@ export default function BookingForm() {
 
             </div>
           </div>
+
+          {/* STEP 4: Tourist Contact & Pickup Phone Number */}
+          <div className="bg-white rounded-3xl border border-gray-200/80 p-6 sm:p-7 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-2.5">
+                <h2 className="text-base sm:text-lg font-black text-gray-900">
+                  Primary Contact & Phone Number
+                </h2>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                Mobile / WhatsApp Number <span className="text-red-500">*</span>
+              </label>
+
+              <div className="relative">
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={17} />
+                <input
+                  type="tel"
+                  required
+                  placeholder="e.g. +94 77 123 4567 or +1 (555) 019-2834"
+                  value={contactPhone}
+                  onChange={(e) => setContactPhone(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#024C25] focus:bg-white text-sm font-semibold text-gray-800 transition"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* RIGHT COLUMN: Sticky Order Summary & Price Breakdown (5 Cols) */}
@@ -1143,7 +1180,7 @@ export default function BookingForm() {
             <div className="space-y-2.5 text-xs text-gray-600 bg-gray-50/80 p-3.5 rounded-2xl border border-gray-100">
               <div className="flex items-center justify-between">
                 <span className="text-gray-400 font-bold uppercase tracking-wider text-[10px]">Naturalist:</span>
-                <strong className="text-gray-900 truncate max-w-[180px]">{selectedDriverName || 'Selected Guide'}</strong>
+                <strong className="text-gray-900 truncate max-w-45">{selectedDriverName || 'Selected Guide'}</strong>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-gray-400 font-bold uppercase tracking-wider text-[10px]">Date:</span>
@@ -1158,6 +1195,12 @@ export default function BookingForm() {
               <div className="flex items-center justify-between">
                 <span className="text-gray-400 font-bold uppercase tracking-wider text-[10px]">Party Size:</span>
                 <span className="font-bold text-gray-800">{count} {count === 1 ? 'Guest' : 'Guests'} ({countryInfo.badge})</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-400 font-bold uppercase tracking-wider text-[10px]">Contact:</span>
+                <span className={`font-bold truncate max-w-45 ${contactPhone ? 'text-gray-800' : 'text-amber-600 italic'}`}>
+                  {contactPhone.trim() || 'Required'}
+                </span>
               </div>
             </div>
 
@@ -1196,10 +1239,9 @@ export default function BookingForm() {
 
               <div className="border-t border-dashed border-gray-200 pt-3.5 flex items-baseline justify-between">
                 <div>
-                  <span className="text-xs font-black uppercase tracking-wider text-gray-400 block">
+                  <span className="text-sm font-black uppercase tracking-wider text-gray-400 block">
                     Total Estimated Cost
                   </span>
-                  <span className="text-[10px] text-gray-400">All taxes & fees included</span>
                 </div>
                 <div className="text-right">
                   <div className="text-xl sm:text-2xl font-black text-[#024C25] tracking-tight">
@@ -1235,27 +1277,8 @@ export default function BookingForm() {
                 </>
               )}
             </button>
-
-            {/* Trust Badges */}
-            <div className="pt-2 border-t border-gray-100 space-y-2">
-              <div className="flex items-center gap-2 text-[11px] text-gray-500 font-medium">
-                <CheckCircle size={14} className="text-emerald-600 shrink-0" />
-                <span>Direct submission to verified Yala park naturalist</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px] text-gray-500 font-medium">
-                <CheckCircle size={14} className="text-emerald-600 shrink-0" />
-                <span>100% Private Safari Jeep (Never shared with strangers)</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px] text-gray-500 font-medium">
-                <CheckCircle size={14} className="text-emerald-600 shrink-0" />
-                <span>Free cancellation & rescheduling up to 24h prior</span>
-              </div>
-            </div>
-
           </div>
-
         </div>
-
       </div>
 
       {/* Guide Selection Modal */}

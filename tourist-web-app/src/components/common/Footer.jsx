@@ -15,9 +15,9 @@ export default function Footer() {
     <footer className="relative bg-[#0c140f] text-gray-400 pt-16 pb-10 border-t border-white/5">
       <div className="container mx-auto px-4 max-w-6xl">
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-10 mb-12">
 
-          <div className="md:col-span-4 space-y-5">
+          <div className="col-span-2 md:col-span-4 space-y-5">
             <Link to="/" className="flex items-center space-x-2.5 text-white group">
               <img src={logoImg} alt="GuideLanka Logo" className="w-8 h-8 object-contain group-hover:scale-105 transition-transform" />
               <span className="text-xl font-bold tracking-tight">
@@ -70,7 +70,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="col-span-1 md:col-span-2">
             <h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-4">
               Explore
             </h3>
@@ -86,11 +86,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/map" className="text-gray-400 hover:text-green-400 transition text-sm">
-                  Live Safari Map
-                </Link>
-              </li>
-              <li>
                 <Link to="/rules" className="text-gray-400 hover:text-green-400 transition text-sm">
                   Park Rules
                 </Link>
@@ -98,7 +93,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="md:col-span-3">
+          <div className="col-span-1 md:col-span-3">
             <h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-4">
               Portals & Help
             </h3>
@@ -126,7 +121,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="md:col-span-3 space-y-4">
+          <div className="col-span-2 md:col-span-3 space-y-4">
             <h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-4">
               Contact Info
             </h3>
@@ -150,7 +145,6 @@ export default function Footer() {
 
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 gap-4">
           <div className="flex items-center gap-1.5">
-            <ShieldCheck size={14} className="text-green-600" />
             <p>&copy; {currentYear} GuideLanka. All rights reserved. Registered under DWC Sri Lanka.</p>
           </div>
           <div className="flex space-x-6">

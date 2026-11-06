@@ -124,13 +124,13 @@ export default function AdminProfile({ user, onUserUpdate }) {
         </div>
       )}
 
-      <div className="relative bg-linear-to-r from-emerald-950/40 via-teal-950/20 to-slate-900/40 border border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden">
+      <div className="relative bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-5 sm:gap-6 z-10 w-full md:w-auto">
 
           <div className="relative group shrink-0">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-400 p-0.5 shadow-xl shadow-emerald-500/10 overflow-hidden">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#024C25] p-0.5 shadow-xl shadow-emerald-500/10 overflow-hidden">
               <div className="w-full h-full bg-slate-950 rounded-2xl flex items-center justify-center overflow-hidden">
                 {avatarUrl ? (
                   <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />

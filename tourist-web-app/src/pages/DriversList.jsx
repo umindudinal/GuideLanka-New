@@ -35,27 +35,15 @@ function DriverAvatar({ driver }) {
           onError={() => setError(true)}
           className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-white shadow-sm group-hover:shadow-md transition-all duration-300"
         />
-        <span
-          className={`absolute -bottom-1 -right-1 w-4 h-4 border-2 border-white rounded-full ${
-            isActive ? 'bg-emerald-500 ring-2 ring-emerald-100' : 'bg-gray-400'
-          }`}
-          title={isActive ? 'Driver is Online' : 'Driver is Offline'}
-        />
       </div>
     );
   }
 
   return (
     <div className="relative shrink-0">
-      <div className="w-18 h-18 sm:w-20 sm:h-20 bg-linear-to-tr from-[#024C25] to-emerald-600 text-white rounded-2xl flex items-center justify-center text-2xl font-black shadow-sm border-2 border-white group-hover:shadow-md transition-all duration-300">
+      <div className="w-18 h-18 sm:w-20 sm:h-20 bg-[#024C25] text-white rounded-2xl flex items-center justify-center text-2xl font-black shadow-sm border-2 border-white group-hover:shadow-md transition-all duration-300">
         {driver.full_name.charAt(0)}
       </div>
-      <span
-        className={`absolute -bottom-1 -right-1 w-4 h-4 border-2 border-white rounded-full ${
-          isActive ? 'bg-emerald-500 ring-2 ring-emerald-100' : 'bg-gray-400'
-        }`}
-        title={isActive ? 'Driver is Online' : 'Driver is Offline'}
-      />
     </div>
   );
 }
@@ -250,10 +238,6 @@ export default function DriversList() {
         style={{ backgroundImage: `url(${heroBg})` }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-900/50 to-black/30 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-500/30 mb-3 sm:mb-4 backdrop-blur-md animate-pulse">
-            <Compass size={14} className="text-green-400" />
-            <span>YALA LICENSED GUIDES</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-2 sm:mb-4 tracking-tight leading-tight">
             Find Your Safari Guide
           </h1>
@@ -397,7 +381,7 @@ export default function DriversList() {
                   {isTopGuide ? (
                     <div className="absolute top-0 left-0 right-0 h-1.5 bg-linear-to-r from-amber-400 via-yellow-400 to-amber-500"></div>
                   ) : (
-                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-linear-to-r from-[#024C25] to-emerald-500"></div>
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#024C25]"></div>
                   )}
 
                   <div>
@@ -489,15 +473,9 @@ export default function DriversList() {
                     {/* Dedicated Separate Price Section */}
                     <div className="bg-emerald-50/70 border border-emerald-200/90 rounded-xl p-2.5 sm:p-3 mb-3.5 flex items-center justify-between shadow-2xs">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-8 h-8 rounded-lg bg-[#024C25] text-white flex items-center justify-center shadow-xs shrink-0">
-                          <Coins size={15} />
-                        </div>
                         <div className="min-w-0">
-                          <span className="text-[10px] text-[#024C25] font-black uppercase tracking-wider block">
+                          <span className="text-[15px] text-[#024C25] font-black uppercase tracking-wider block">
                             Safari Price
-                          </span>
-                          <span className="text-[10px] text-gray-500 font-medium block truncate">
-                            Jeep & Driver included
                           </span>
                         </div>
                       </div>

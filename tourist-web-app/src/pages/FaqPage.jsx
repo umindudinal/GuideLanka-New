@@ -71,10 +71,6 @@ export default function FaqPage() {
         style={{ backgroundImage: `url(${heroBg})` }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-900/50 to-black/30 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-500/30 mb-3 sm:mb-4 backdrop-blur-md animate-pulse">
-            <HelpCircle size={14} className="text-green-400" />
-            <span>KNOWLEDGE BASE & SUPPORT</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-2 sm:mb-4 tracking-tight leading-tight">
             FAQ & Help Center
           </h1>
@@ -137,39 +133,7 @@ export default function FaqPage() {
             );
           })}
         </div>
-
-        {/* Still have questions card */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-xs text-center space-y-4 mt-8 sm:mt-12">
-          <div className="w-12 h-12 bg-green-50 text-green-700 rounded-2xl flex items-center justify-center mx-auto border border-green-100 shadow-3xs">
-            <Info size={22} />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-lg sm:text-xl font-black text-gray-900">Still have questions?</h3>
-            <p className="text-xs sm:text-sm text-gray-500 max-w-sm mx-auto leading-relaxed">
-              If you need customized assistance or have specific inquiries about your safari, reach out to our team directly.
-            </p>
-          </div>
-
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 bg-[#024C25] hover:bg-[#01381b] text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition shadow-md active:scale-95 cursor-pointer"
-            >
-              Contact Support Desk <ArrowRight size={15} />
-            </Link>
-            <a
-              href="https://wa.me/94771234567"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition shadow-md active:scale-95 cursor-pointer"
-            >
-              <MessageCircle size={16} /> WhatsApp (+94 77 123 4567)
-            </a>
-          </div>
-        </div>
-
       </div>
-
     </div>
   );
 }

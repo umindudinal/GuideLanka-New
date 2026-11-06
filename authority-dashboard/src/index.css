@@ -14,10 +14,41 @@
   --color-slate-900: var(--slate-900);
   --color-slate-950: var(--slate-950);
 
+  --color-emerald-50: var(--emerald-50);
+  --color-emerald-100: var(--emerald-100);
+  --color-emerald-200: var(--emerald-200);
+  --color-emerald-300: var(--emerald-300);
   --color-emerald-400: var(--emerald-400);
   --color-emerald-500: var(--emerald-500);
+  --color-emerald-600: var(--emerald-600);
+  --color-emerald-700: var(--emerald-700);
+  --color-emerald-800: var(--emerald-800);
+  --color-emerald-900: var(--emerald-900);
+  --color-emerald-950: var(--emerald-950);
+
+  --color-green-50: var(--green-50);
+  --color-green-100: var(--green-100);
+  --color-green-200: var(--green-200);
+  --color-green-300: var(--green-300);
+  --color-green-400: var(--green-400);
+  --color-green-500: var(--green-500);
+  --color-green-600: var(--green-600);
+  --color-green-700: var(--green-700);
+  --color-green-800: var(--green-800);
+  --color-green-900: var(--green-900);
+  --color-green-950: var(--green-950);
+
+  --color-teal-50: var(--teal-50);
+  --color-teal-100: var(--teal-100);
+  --color-teal-200: var(--teal-200);
+  --color-teal-300: var(--teal-300);
   --color-teal-400: var(--teal-400);
   --color-teal-500: var(--teal-500);
+  --color-teal-600: var(--teal-600);
+  --color-teal-700: var(--teal-700);
+  --color-teal-800: var(--teal-800);
+  --color-teal-900: var(--teal-900);
+
   --color-rose-400: var(--rose-400);
   --color-rose-500: var(--rose-500);
   --color-amber-400: var(--amber-400);
@@ -38,17 +69,47 @@
   --slate-900: #ffffff;
   --slate-950: #f8fafc;
 
-  --emerald-400: #047857;
-  --emerald-500: #059669;
-  --teal-400: #0f766e;
-  --teal-500: #0d9488;
+  /* GuideLanka Official Brand Green (extracted directly from logo: #024C25 / #02552a) */
+  --emerald-50: #f0fdf4;
+  --emerald-100: #dcfce7;
+  --emerald-200: #bbf7d0;
+  --emerald-300: #86efac;
+  --emerald-400: #02552a;
+  --emerald-500: #024c25;
+  --emerald-600: #024c25;
+  --emerald-700: #01381b;
+  --emerald-800: #012b15;
+  --emerald-900: #012411;
+  --emerald-950: #00170a;
+
+  --green-50: #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-300: #86efac;
+  --green-400: #02552a;
+  --green-500: #024c25;
+  --green-600: #024c25;
+  --green-700: #024c25;
+  --green-800: #01381b;
+  --green-900: #012b15;
+  --green-950: #00170a;
+
+  --teal-50: #f0fdf4;
+  --teal-100: #dcfce7;
+  --teal-200: #bbf7d0;
+  --teal-300: #86efac;
+  --teal-400: #02552a;
+  --teal-500: #024c25;
+  --teal-600: #024c25;
+  --teal-700: #01381b;
+  --teal-800: #012b15;
+  --teal-900: #012411;
+
   --rose-400: #b91c1c;
   --rose-500: #dc2626;
   --amber-400: #b45309;
   --amber-500: #d97706;
 }
-
-
 
 html, body {
   overflow-x: hidden;
@@ -123,5 +184,3 @@ img, video, svg {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
-
-

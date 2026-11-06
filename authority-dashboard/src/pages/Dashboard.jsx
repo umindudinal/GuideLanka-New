@@ -14,7 +14,9 @@ import {
   Navigation,
   Activity,
   UserCheck,
-  Menu
+  Menu,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 
 import logoImg from '../assets/logo.png';
@@ -31,6 +33,34 @@ import AdminProfile from '../components/AdminProfile';
 export default function Dashboard({ user, onUserUpdate, onLogout }) {
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('activeTab') || 'overview');
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => localStorage.getItem('authority_sidebar_collapsed') === 'true');
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      fetchAllData();
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('authority_sidebar_collapsed', isSidebarCollapsed ? 'true' : 'false');
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 310);
+    return () => clearTimeout(timer);
+  }, [isSidebarCollapsed]);
 
   const [sightings, setSightings] = useState([]);
   const [sosAlerts, setSosAlerts] = useState([]);
@@ -323,9 +353,17 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
         onLogout={onLogout}
         isMobileOpen={isMobileOpen}
         onClose={() => setIsMobileOpen(false)}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={() => setIsSidebarCollapsed(prev => !prev)}
       />
 
       <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
+        {!isOnline && (
+          <div className="bg-amber-500/15 border-b border-amber-500/30 text-amber-300 text-xs py-2 px-4 text-center font-bold flex items-center justify-center gap-2 z-40 shrink-0">
+            <AlertTriangle size={14} className="text-amber-400 shrink-0" />
+            <span>Internet connection lost. Waiting for connection to reconnect to Supabase...</span>
+          </div>
+        )}
         {/* Mobile Navigation Header */}
         <header className="lg:hidden shrink-0 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between shadow-xs z-30">
           <div className="flex items-center gap-3">
@@ -364,21 +402,34 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
         {/* Pinned Top Bar */}
         <header className="shrink-0 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-6 lg:px-8 py-4 sm:py-5 z-20">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
-            <div>
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-50 tracking-tight">
-                {activeTab === 'overview' && 'Operations Overview'}
-                {activeTab === 'map' && 'Live Operations Map'}
-                {activeTab === 'alerts' && 'Emergency Management'}
-                {activeTab === 'drivers' && 'Driver Directory'}
-                {activeTab === 'routes' && 'Route Controller'}
-                {activeTab === 'revenue' && 'Revenue & Fees Tracker'}
-                {activeTab === 'reports' && 'Reports & Analytics Center'}
-                {activeTab === 'profile' && 'Admin Profile Information'}
-                {activeTab === 'tourists' && 'Tourist Analytics'}
-              </h1>
-              <p className="text-[11px] sm:text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">
-                GuideLanka Administrative Dashboard
-              </p>
+            <div className="flex items-center gap-3.5">
+              {/* Desktop Sidebar Toggle Button */}
+              <button
+                onClick={() => setIsSidebarCollapsed(prev => !prev)}
+                className="hidden lg:flex p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-100 transition cursor-pointer shadow-xs shrink-0"
+                title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                aria-label={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                type="button"
+              >
+                {isSidebarCollapsed ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
+              </button>
+
+              <div>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-50 tracking-tight">
+                  {activeTab === 'overview' && 'Operations Overview'}
+                  {activeTab === 'map' && 'Live Operations Map'}
+                  {activeTab === 'alerts' && 'Emergency Management'}
+                  {activeTab === 'drivers' && 'Driver Directory'}
+                  {activeTab === 'routes' && 'Route Controller'}
+                  {activeTab === 'revenue' && 'Revenue & Fees Tracker'}
+                  {activeTab === 'reports' && 'Reports & Analytics Center'}
+                  {activeTab === 'profile' && 'Admin Profile Information'}
+                  {activeTab === 'tourists' && 'Tourist Analytics'}
+                </h1>
+                <p className="text-[11px] sm:text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">
+                  GuideLanka Administrative Dashboard
+                </p>
+              </div>
             </div>
 
             <div className="hidden sm:flex items-center gap-3">
@@ -389,10 +440,17 @@ export default function Dashboard({ user, onUserUpdate, onLogout }) {
                 </div>
               )}
 
-              <div className="bg-slate-900 border border-slate-800 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-xs">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
-                <span className="text-xs font-bold text-slate-300">Live Sync Engaged</span>
-              </div>
+              {isOnline ? (
+                <div className="bg-slate-900 border border-slate-800 px-3.5 py-2 rounded-2xl flex items-center gap-2 shadow-xs">
+                  <span className="w-2 h-2 bg-[#024C25] rounded-full animate-ping"></span>
+                  <span className="text-xs font-bold text-slate-300">Live Sync Engaged</span>
+                </div>
+              ) : (
+                <div className="bg-amber-500/10 border border-amber-500/30 px-3.5 py-2 rounded-2xl flex items-center gap-2 shadow-xs text-amber-400 animate-pulse">
+                  <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                  <span className="text-xs font-bold">Offline (Reconnecting...)</span>
+                </div>
+              )}
             </div>
           </div>
         </header>

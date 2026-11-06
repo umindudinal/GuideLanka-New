@@ -231,9 +231,9 @@ export default function ReportsAnalysis({ bookings }) {
               <div class="meta-label">Total Guest Permits</div>
               <div class="metric-num">${totalGuests}</div>
             </div>
-            <div class="metric-card" style="border-left: 4px solid #059669;">
+            <div class="metric-card" style="border-left: 4px solid #024C25;">
               <div class="meta-label">Park Revenue (LKR)</div>
-              <div class="metric-num" style="color: #059669;">LKR ${totalRevenue.toLocaleString()}</div>
+              <div class="metric-num" style="color: #024C25;">LKR ${totalRevenue.toLocaleString()}</div>
             </div>
           </div>
 
@@ -275,7 +275,7 @@ export default function ReportsAnalysis({ bookings }) {
                       ${b.status}
                     </span>
                   </td>
-                  <td class="text-right" style="font-weight: bold; ${b.revenue > 0 ? 'color: #059669;' : 'color: #94a3b8; text-decoration: line-through;'}">
+                  <td class="text-right" style="font-weight: bold; ${b.revenue > 0 ? 'color: #024C25;' : 'color: #94a3b8; text-decoration: line-through;'}">
                     LKR ${b.revenue.toLocaleString()}
                   </td>
                 </tr>

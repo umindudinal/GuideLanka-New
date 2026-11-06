@@ -11,12 +11,7 @@ export default function BookingPage() {
         className="relative w-full h-72 sm:h-84 md:h-96 overflow-hidden bg-cover bg-center mb-8 shadow-md"
         style={{ backgroundImage: `url(${heroBg})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/70 to-black/40 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-500/30 mb-3 sm:mb-4 backdrop-blur-md animate-pulse">
-            <ShieldCheck size={14} className="text-green-400" />
-            <span>OFFICIAL YALA SAFARI RESERVATION PORTAL</span>
-          </div>
-
+        <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/70 to-black/40 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">
             Reserve Your Safari Expedition
           </h1>
@@ -25,7 +20,7 @@ export default function BookingPage() {
           </p>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-gray-50/70 to-transparent" />
       </div>
 
       {/* Main Reservation Flow Container */}

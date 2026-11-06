@@ -488,7 +488,7 @@ export default function Login({ onLoginSuccess }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-bold py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/10 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer mt-5"
+              className="w-full bg-[#024C25] hover:bg-[#01381b] text-slate-950 font-bold py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/10 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer mt-5"
             >
               {loading ? (
                 <>
@@ -567,7 +567,7 @@ export default function Login({ onLoginSuccess }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-bold py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/10 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer mt-6"
+              className="w-full bg-[#024C25] hover:bg-[#01381b] text-slate-950 font-bold py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/10 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer mt-6"
             >
               {loading ? (
                 <>

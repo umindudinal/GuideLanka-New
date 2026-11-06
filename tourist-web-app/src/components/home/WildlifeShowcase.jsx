@@ -12,8 +12,6 @@ export default function WildlifeShowcase() {
       image: leopardImg,
       sightingRate: "70%",
       sightingColor: "text-amber-600 bg-amber-50 border-amber-100",
-      bestTime: "Dawn & Dusk",
-      block: "Block 5"
     },
     {
       name: "Asian Elephant",
@@ -21,8 +19,6 @@ export default function WildlifeShowcase() {
       image: elephantImg,
       sightingRate: "95%",
       sightingColor: "text-emerald-600 bg-emerald-50 border-emerald-100",
-      bestTime: "3:00 PM - 6:00 PM",
-      block: "Block 6"
     },
     {
       name: "Sloth Bear",
@@ -30,8 +26,6 @@ export default function WildlifeShowcase() {
       image: slothBearImg,
       sightingRate: "35%",
       sightingColor: "text-rose-600 bg-rose-50 border-rose-100",
-      bestTime: "Early Morning",
-      block: "Block 5"
     },
     {
       name: "Mugger Crocodile",
@@ -39,8 +33,6 @@ export default function WildlifeShowcase() {
       image: crocodileImg,
       sightingRate: "85%",
       sightingColor: "text-blue-600 bg-blue-50 border-blue-100",
-      bestTime: "11:00 AM - 2:00 PM",
-      block: "Block 5 Lakes"
     }
   ];
 
@@ -49,10 +41,6 @@ export default function WildlifeShowcase() {
       <div className="container mx-auto px-4 max-w-6xl">
 
         <div className="text-center mb-10 md:mb-16 flex flex-col items-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100 mb-3">
-            <Eye size={12} />
-            <span>YALA WILDLIFE HIGHLIGHTS</span>
-          </div>
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-gray-800 mb-3 sm:mb-4 tracking-tight">
             Spot Yala's Iconic Species
           </h2>
@@ -71,9 +59,6 @@ export default function WildlifeShowcase() {
                   alt={animal.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-black/60 text-white backdrop-blur-sm">
-                  {animal.block}
-                </div>
               </div>
 
               <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
@@ -89,25 +74,14 @@ export default function WildlifeShowcase() {
                 <div className="space-y-2.5 pt-2 border-t border-gray-50">
                   <div className="flex justify-between items-center text-xs">
                     <span className="text-gray-400 font-medium flex items-center gap-1">
-                      <TrendingUp size={12} />
                       Sighting Chance
                     </span>
                     <span className={`px-2 py-0.5 rounded-full font-bold border ${animal.sightingColor}`}>
                       {animal.sightingRate}
                     </span>
-                  </div>
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-gray-400 font-medium flex items-center gap-1">
-                      <Clock size={12} />
-                      Peak Activity
-                    </span>
-                    <span className="font-bold text-gray-700">
-                      {animal.bestTime}
-                    </span>
-                  </div>
+                  </div> 
                 </div>
               </div>
-
             </div>
           ))}
         </div>

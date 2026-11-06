@@ -285,7 +285,7 @@ function DriverCard({ driver, onDriverDeleted, onDriverUpdated }) {
               className="w-14 h-14 rounded-2xl object-cover border border-slate-800 bg-slate-950 shadow-inner shrink-0"
             />
           ) : (
-            <div className="w-14 h-14 rounded-2xl bg-linear-to-tr from-emerald-500/20 to-teal-500/20 border border-emerald-500/20 text-emerald-400 font-extrabold text-xl flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-[#024C25]/10 border border-emerald-500/20 text-emerald-400 font-extrabold text-xl flex items-center justify-center shrink-0">
               {driver.full_name?.charAt(0) || 'D'}
             </div>
           )}
@@ -860,7 +860,7 @@ export default function DriverReviewList({ drivers, onDriverAdded, onDriverUpdat
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-bold px-4 sm:px-5 py-3 rounded-2xl text-xs flex items-center justify-center gap-2 transition shadow-md shadow-emerald-500/5 cursor-pointer shrink-0 w-full sm:w-auto"
+          className="bg-[#024C25] hover:bg-[#01381b] text-slate-950 font-bold px-4 sm:px-5 py-3 rounded-2xl text-xs flex items-center justify-center gap-2 transition shadow-md shadow-emerald-500/5 cursor-pointer shrink-0 w-full sm:w-auto"
         >
           <Plus size={16} />
           <span>Register New Driver</span>
@@ -1203,7 +1203,7 @@ export default function DriverReviewList({ drivers, onDriverAdded, onDriverUpdat
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-bold py-3 rounded-2xl text-xs transition shadow-md shadow-emerald-500/10 disabled:opacity-50 flex items-center justify-center gap-1.5 cursor-pointer mt-5"
+                className="w-full bg-[#024C25] hover:bg-[#01381b] text-slate-950 font-bold py-3 rounded-2xl text-xs transition shadow-md shadow-emerald-500/10 disabled:opacity-50 flex items-center justify-center gap-1.5 cursor-pointer mt-5"
               >
                 {loading
                   ? (otpSent ? 'Verifying & Registering...' : 'Sending Code...')

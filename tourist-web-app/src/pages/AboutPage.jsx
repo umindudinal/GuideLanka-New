@@ -19,10 +19,6 @@ export default function AboutPage() {
         style={{ backgroundImage: `url(${heroBg})` }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-900/50 to-black/30 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-500/30 mb-3 sm:mb-4 backdrop-blur-md animate-pulse">
-            <Compass size={14} className="text-green-400" />
-            <span>THE UNEXPLORED WILDERNESS</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-2 sm:mb-4 tracking-tight leading-tight">
             Discover Yala Block 5 & 6
           </h1>
@@ -58,9 +54,6 @@ export default function AboutPage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-transparent"></div>
-              <span className="absolute bottom-4 left-4 text-white text-xs font-black bg-green-700/80 px-3 py-1 rounded-full backdrop-blur-sm uppercase">
-                Galge Entrance
-              </span>
             </div>
             
             <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
@@ -73,18 +66,6 @@ export default function AboutPage() {
                   Known for its scenic riverine forests and open grasslands, Block 5 is a haven for those looking to explore wildlife away from the heavy jeep traffic of Block 1. It offers an undisturbed environment to spot elusive leopards, sloth bears, and diverse birdlife.
                 </p>
               </div>
-
-              <div className="flex flex-wrap gap-2 mt-auto">
-                <span className="inline-flex items-center text-[11px] sm:text-xs font-bold text-gray-700 bg-gray-50 border border-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl">
-                  ☘️ Low Jeep Density
-                </span>
-                <span className="inline-flex items-center text-[11px] sm:text-xs font-bold text-gray-700 bg-gray-50 border border-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl">
-                  ☘️ Leopard Territory
-                </span>
-                <span className="inline-flex items-center text-[11px] sm:text-xs font-bold text-gray-700 bg-gray-50 border border-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl">
-                  ☘️ Scenic Landscapes
-                </span>
-              </div>
             </div>
           </div>
 
@@ -96,9 +77,6 @@ export default function AboutPage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-transparent"></div>
-              <span className="absolute bottom-4 left-4 text-white text-xs font-black bg-blue-700/80 px-3 py-1 rounded-full backdrop-blur-sm uppercase">
-                Lunugamvehera Entrance
-              </span>
             </div>
 
             <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
@@ -111,18 +89,6 @@ export default function AboutPage() {
                   Functioning as a crucial elephant corridor, Lunugamvehera is a serene alternative to the main park. With its picturesque lakes and lush forests, it supports a high density of elephants and a thriving ecosystem of wetlands.
                 </p>
               </div>
-
-              <div className="flex flex-wrap gap-2 mt-auto">
-                <span className="inline-flex items-center text-[11px] sm:text-xs font-bold text-gray-700 bg-gray-50 border border-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl">
-                  ☘️ Elephant Corridor
-                </span>
-                <span className="inline-flex items-center text-[11px] sm:text-xs font-bold text-gray-700 bg-gray-50 border border-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl">
-                  ☘️ Picturesque Lakes
-                </span>
-                <span className="inline-flex items-center text-[11px] sm:text-xs font-bold text-gray-700 bg-gray-50 border border-gray-100 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl">
-                  ☘️ Wetland Bird Haven
-                </span>
-              </div>
             </div>
           </div>
 
@@ -133,10 +99,6 @@ export default function AboutPage() {
           
           <div className="relative z-10">
             <div className="text-center mb-8 sm:mb-12">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100 mb-3">
-                <Award size={12} />
-                OUR CORE VALUES
-              </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3 sm:mb-4 text-gray-800">Why Book With GuideLanka?</h2>
               <p className="text-gray-500 max-w-2xl mx-auto text-xs sm:text-sm leading-relaxed">
                 Our platform is specifically designed to promote ethical wildlife tourism and provide you with the best possible wilderness experience in Sri Lanka.
@@ -173,10 +135,6 @@ export default function AboutPage() {
 
         <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-12 border border-gray-100 shadow-sm mt-12 sm:mt-16">
           <div className="text-center mb-8 sm:mb-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100 mb-3">
-              <Ticket size={12} />
-              OFFICIAL GOVERNMENT RATES
-            </span>
             <h2 className="text-2xl sm:text-3xl font-black text-gray-800">Park Entrance Fees</h2>
             <p className="text-gray-500 max-w-xl mx-auto text-xs sm:text-sm mt-2 leading-relaxed">
               Official Department of Wildlife Conservation (DWC) permit rates for entering Yala and Lunugamvehera National Parks.

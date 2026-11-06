@@ -31,8 +31,8 @@ L.Icon.Default.mergeOptions({
 const jeepDivIcon = new L.divIcon({
   html: `<div style="
     font-size: 24px;
-    background: rgba(16, 185, 129, 0.2);
-    border: 2px solid #10b981;
+    background: rgba(2, 76, 37, 0.2);
+    border: 2px solid #024C25;
     border-radius: 50%;
     width: 36px;
     height: 36px;

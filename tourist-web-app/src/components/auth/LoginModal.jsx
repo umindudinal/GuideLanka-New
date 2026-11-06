@@ -9,7 +9,7 @@ export default function LoginModal({ isOpen, onClose }) {
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300" onClick={onClose}></div>
 
-      <div className="relative bg-white rounded-3xl w-full max-w-md shadow-2xl z-10 overflow-hidden transform transition-all duration-300 border border-gray-150 flex flex-col">
+      <div className="relative bg-white rounded-3xl w-full max-w-md max-h-[92dvh] overflow-y-auto shadow-2xl z-10 transform transition-all duration-300 border border-gray-150 flex flex-col">
 
         <button
           onClick={onClose}

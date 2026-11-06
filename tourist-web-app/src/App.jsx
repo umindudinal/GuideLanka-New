@@ -4,7 +4,6 @@ import Navbar from './components/common/Navbar';
 import Home from './pages/Home';
 import DriversList from './pages/DriversList';
 import BookingPage from './pages/BookingPage';
-import MapPage from './pages/MapPage';
 import ParkRules from './pages/ParkRules';
 import DriverProfile from './pages/DriverProfile';
 import ChatPage from './pages/ChatPage';
@@ -22,9 +21,7 @@ import NotFound from './pages/NotFound';
 function MainLayout() {
   const location = useLocation();
 
-  const shouldHideFooter = ['/chat', '/map'].some(path =>
-    location.pathname.toLowerCase().includes(path)
-  );
+  const shouldHideFooter = location.pathname.toLowerCase().includes('/chat');
 
   console.log("Footer check - Path:", location.pathname, "Should hide:", shouldHideFooter);
 
@@ -37,7 +34,6 @@ function MainLayout() {
           <Route path="/" element={<Home />} />
           <Route path="/drivers" element={<DriversList />} />
           <Route path="/booking" element={<BookingPage />} />
-          <Route path="/map" element={<MapPage />} />
           <Route path="/rules" element={<ParkRules />} />
           <Route path="/driver/:id" element={<DriverProfile />} />
           <Route path="/chat/:bookingId" element={<ChatPage />} />

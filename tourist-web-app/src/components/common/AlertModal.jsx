@@ -17,7 +17,7 @@ export default function AlertModal({ isOpen, onClose, title, message, type = 'wa
       bgIcon: 'bg-emerald-50 border-emerald-200',
       titleColor: 'text-emerald-950',
       buttonClass: 'bg-emerald-600 hover:bg-emerald-700',
-      accentColor: '#10b981',
+      accentColor: '#024C25',
       defaultTitle: 'Success'
     },
     error: {
@@ -40,7 +40,7 @@ export default function AlertModal({ isOpen, onClose, title, message, type = 'wa
 
   const iconMap = {
     warning: <AlertTriangle size={36} color="#f59e0b" />,
-    success: <CheckCircle size={36} color="#10b981" />,
+    success: <CheckCircle size={36} color="#024C25" />,
     error: <XCircle size={36} color="#f43f5e" />,
     info: <Info size={36} color="#0ea5e9" />
   };
@@ -76,7 +76,8 @@ export default function AlertModal({ isOpen, onClose, title, message, type = 'wa
         width: '100%',
         maxWidth: '400px',
         boxShadow: '0 32px 64px -16px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.05)',
-        overflow: 'hidden',
+        overflowY: 'auto',
+        maxHeight: '90dvh',
         zIndex: 10
       }}>
         <div style={{ height: '5px', background: c.accentColor, width: '100%' }} />

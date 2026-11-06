@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, MessageSquare, User, Calendar, Clock, Car, Users, X } from 'lucide-react';
+import { CheckCircle, MessageSquare, User, Calendar, Clock, Car, Users, X, Phone } from 'lucide-react';
 
 export default function BookingSuccessModal({ isOpen, onClose, bookingData }) {
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ export default function BookingSuccessModal({ isOpen, onClose, bookingData }) {
       onClick={onClose}
     >
       <div 
-        className="relative bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 text-left my-auto"
+        className="relative bg-white rounded-3xl max-w-lg w-full max-h-[90dvh] overflow-y-auto p-5 sm:p-8 shadow-2xl border border-gray-100 text-left my-auto"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'modalPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
       >
@@ -120,6 +120,15 @@ export default function BookingSuccessModal({ isOpen, onClose, bookingData }) {
             </span>
             <span className="font-bold text-gray-900">{bookingData.tourist_count} Persons</span>
           </div>
+
+          {bookingData.contactPhone && (
+            <div className="flex items-center justify-between py-1 border-b border-gray-200/60">
+              <span className="text-gray-500 font-medium flex items-center gap-1.5">
+                <Phone size={15} className="text-green-700 shrink-0" /> Contact Phone:
+              </span>
+              <span className="font-bold text-gray-900">{bookingData.contactPhone}</span>
+            </div>
+          )}
 
           <div className="flex items-center justify-between pt-1">
             <span className="text-gray-500 font-medium">Status:</span>
