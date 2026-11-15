@@ -338,13 +338,9 @@ export default function BookingForm() {
   const [activeBookingsList, setActiveBookingsList] = useState([]);
   const [checkingActive, setCheckingActive] = useState(false);
 
-  const getTodayDateString = () => {
-    const d = new Date();
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
+  const getTodayDateString = () => new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Colombo', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(new Date());
 
   const todayStr = getTodayDateString();
 
@@ -509,7 +505,7 @@ export default function BookingForm() {
           .select('id, time_slot, status, booking_date')
           .eq('driver_id', selectedDriverId)
           .eq('booking_date', date)
-          .in('status', ['CONFIRMED', 'APPROVED']);
+          .in('status', ['PENDING', 'CONFIRMED', 'APPROVED']);
 
         if (error) throw error;
         if (isMounted) {
@@ -640,7 +636,7 @@ export default function BookingForm() {
         .select('id, time_slot, status')
         .eq('driver_id', selectedDriverId)
         .eq('booking_date', date)
-        .in('status', ['CONFIRMED', 'APPROVED']);
+        .in('status', ['PENDING', 'CONFIRMED', 'APPROVED']);
 
       if (driverErr) throw driverErr;
 

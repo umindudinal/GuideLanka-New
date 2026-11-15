@@ -115,7 +115,7 @@ export default function DriversList() {
         const isBookedToday = bookingsData?.some(b =>
           b.driver_id === d.id &&
           b.booking_date === todayStr &&
-          b.status === 'CONFIRMED'
+          ['PENDING', 'CONFIRMED', 'APPROVED'].includes(b.status)
         ) || false;
 
         return {
@@ -405,7 +405,7 @@ export default function DriversList() {
                           {driver.isBookedToday ? (
                             <span className="bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold border border-amber-200 flex items-center gap-1">
                               <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
-                              On Safari
+                              Booked Today
                             </span>
                           ) : isActive ? (
                             <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-bold border border-emerald-100 flex items-center gap-1">

@@ -13,9 +13,15 @@ export default function DriverCard({ driver }) {
         <div>
           <h3 className="font-bold text-lg text-gray-900">{driver.name}</h3>
           <div className="flex items-center text-yellow-500 text-sm mt-1">
-            <Star size={16} fill="currentColor" />
-            <span className="ml-1 font-bold text-gray-700">{driver.rating}</span>
-            <span className="ml-1 text-gray-400">({driver.reviews} reviews)</span>
+            {Number(driver.reviewsCount ?? driver.reviews ?? 0) > 0 && Number.isFinite(Number(driver.avgRating ?? driver.rating)) ? (
+              <>
+                <Star size={16} fill="currentColor" />
+                <span className="ml-1 font-bold text-gray-700">{driver.avgRating ?? driver.rating}</span>
+                <span className="ml-1 text-gray-400">({driver.reviewsCount ?? driver.reviews} reviews)</span>
+              </>
+            ) : (
+              <span className="text-gray-500">New Guide · No reviews yet</span>
+            )}
           </div>
         </div>
       </div>
