@@ -21,18 +21,17 @@ const createBooking = async (req, res) => {
     const tourist_id = req.user.id;
 
     try {
-        if (!booking_date) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(booking_date || '') || !Number.isFinite(Date.parse(booking_date + 'T00:00:00Z'))) {
             return res.status(400).json({
                 success: false,
                 error: "Booking date is required."
             });
         }
 
-        const d = new Date();
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const todayStr = `${year}-${month}-${day}`;
+        // Safaris operate in Sri Lanka, regardless of the server's timezone.
+        const todayStr = new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'Asia/Colombo', year: 'numeric', month: '2-digit', day: '2-digit'
+        }).format(new Date());
 
         if (booking_date < todayStr) {
             return res.status(400).json({
@@ -42,6 +41,9 @@ const createBooking = async (req, res) => {
         }
 
         const slotToBook = time_slot || 'morning';
+        if (!['morning', 'evening', 'full'].includes(normalizeSlot(slotToBook))) {
+            return res.status(400).json({ success: false, error: 'Invalid safari time slot.' });
+        }
 
         // Check if driver has a confirmed reservation on the same date and conflicting slot
         if (driver_id) {
@@ -50,7 +52,7 @@ const createBooking = async (req, res) => {
                 .select('id, time_slot, status')
                 .eq('driver_id', driver_id)
                 .eq('booking_date', booking_date)
-                .in('status', ['CONFIRMED', 'APPROVED']);
+                .in('status', ['PENDING', 'CONFIRMED', 'APPROVED']);
 
             if (driverError) throw driverError;
 

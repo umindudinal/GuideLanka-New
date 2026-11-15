@@ -38,6 +38,12 @@ class _SafariMapScreenState extends State<SafariMapScreen> with SingleTickerProv
   List<dynamic> _recentSightings = [];
 
   Timer? _sightingsTimer;
+  // Track sightings encountered during this map session (foreground only).
+  final Set<String> _seenSightingIds = {};
+  bool _sightingsInitialized = false;
+  bool _hasGpsFix = false;
+  static const double _nearbySightingRadiusMeters = 5000;
+
 
   bool _isSatelliteView = true;
   List<Polyline>? _roadPolylines;
@@ -165,6 +171,69 @@ class _SafariMapScreenState extends State<SafariMapScreen> with SingleTickerProv
       setState(() {
         _recentSightings = allCombined;
       });
+      _considerNearbySightings(allCombined);
+    }
+  }
+
+  // Poll-based foreground notifications (not push notifications).
+  // Recommend the sighting with the shortest route on the actual safari road graph.
+  void _considerNearbySightings(List<dynamic> sightings) {
+    final newlyArrived = <Map<String, dynamic>>[];
+    for (final item in sightings) {
+      if (item is! Map) continue;
+      final sighting = Map<String, dynamic>.from(item);
+      if (sighting['is_offline'] == true) continue;
+      final id = sighting['id']?.toString();
+      if (id == null || id.isEmpty) continue;
+      if (!_seenSightingIds.contains(id) && _sightingsInitialized) {
+        newlyArrived.add(sighting);
+      }
+      _seenSightingIds.add(id);
+    }
+    _sightingsInitialized = true;
+    if (!_hasGpsFix || _currentLocation == null || !_s2rService.isReady) return;
+
+    Map<String, dynamic>? nearest;
+    double nearestRoadDistance = double.infinity;
+    for (final item in sightings) {
+      if (item is! Map || item['is_offline'] == true) continue;
+      final sighting = Map<String, dynamic>.from(item);
+      final lat = double.tryParse(sighting['location_lat']?.toString() ?? '');
+      final lng = double.tryParse(sighting['location_lng']?.toString() ?? '');
+      if (lat == null || lng == null) continue;
+      final target = LatLng(lat, lng);
+      if (S2RRoutingService.distanceMeters(_currentLocation!, target) > _nearbySightingRadiusMeters) continue;
+      final when = DateTime.tryParse(sighting['created_at']?.toString() ?? '');
+      final route = _s2rService.calculateRoute(
+        driverLocation: _currentLocation!,
+        sightingLocation: target,
+        animalType: sighting['animal_type']?.toString() ?? 'Wildlife',
+        sightingTime: when,
+      );
+      if (route.distanceMeters < nearestRoadDistance) {
+        nearestRoadDistance = route.distanceMeters;
+        nearest = sighting;
+      }
+    }
+
+    // If the driver has not manually chosen a destination, show the closest.
+    // When new sightings arrive, update the suggested route to the nearest one.
+    if (nearest != null && (_selectedSighting == null || newlyArrived.isNotEmpty)) {
+      _onSightingSelected(nearest);
+    }
+
+    final nearbyNew = newlyArrived.where((s) {
+      final lat = double.tryParse(s['location_lat']?.toString() ?? '');
+      final lng = double.tryParse(s['location_lng']?.toString() ?? '');
+      return lat != null && lng != null &&
+          S2RRoutingService.distanceMeters(_currentLocation!, LatLng(lat, lng)) <= _nearbySightingRadiusMeters;
+    }).toList();
+    if (nearbyNew.isNotEmpty && mounted) {
+      final type = nearbyNew.last['animal_type']?.toString() ?? 'Wildlife';
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Nearby sighting: $type. Closest road route updated.'),
+        duration: const Duration(seconds: 5),
+      ));
     }
   }
 
@@ -329,6 +398,7 @@ class _SafariMapScreenState extends State<SafariMapScreen> with SingleTickerProv
       if (mounted) {
         setState(() {
           _currentLocation = LatLng(position.latitude, position.longitude);
+          _hasGpsFix = true;
         });
       }
 
@@ -343,6 +413,7 @@ class _SafariMapScreenState extends State<SafariMapScreen> with SingleTickerProv
         if (mounted) {
           setState(() {
             _currentLocation = LatLng(position.latitude, position.longitude);
+            _hasGpsFix = true;
           });
 
           if (_isMapReady) {

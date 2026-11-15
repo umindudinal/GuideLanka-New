@@ -25,6 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/sightings', sightingRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/notifications', require('./src/routes/bookingNotificationRoutes'));
 app.use('/api/routes', routeRoutes);
 app.use('/api/driver', driverRoutes);
 app.use('/api/chat', chatRoutes);
