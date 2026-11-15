@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-// GuideLanka Backend Server
+const path = require('path');
+
+// Ensure .env is loaded regardless of current working directory
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 require('dotenv').config();
 
 const app = express();
@@ -19,7 +23,6 @@ const routeRoutes = require('./src/routes/routeRoutes');
 const driverRoutes = require('./src/routes/driverRoutes');
 const chatRoutes = require('./src/routes/chatRoutes');
 const alertRoutes = require('./src/routes/alertRoutes');
-const path = require('path');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);

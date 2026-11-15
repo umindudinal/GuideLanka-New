@@ -11,8 +11,8 @@ const authMiddleware = (req, res, next) => {
     const token = authHeader.split(' ')[1];
 
     try {
-
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        const secret = process.env.JWT_SECRET || 'guidelanka_super_secret_jwt_key_2026';
+        const verified = jwt.verify(token, secret);
 
         req.user = verified;
 
